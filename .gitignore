@@ -43,6 +43,6 @@ next-env.d.ts
 # Docker build artifacts
 #**/Dockerfile.*
 #**/dockerfile.*
-docker-compose*
+#docker-compose*
 
 # Docker Compose project files

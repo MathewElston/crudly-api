@@ -1,0 +1,43 @@
+services:
+  nginx:
+    image: reverse-proxy
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: ${NGINX_HOST}
+    env_file: .env
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    depends_on:
+      - api-server
+      - web-server
+  api-server:
+    image: api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: ${API_SERVER_HOST}
+    env_file: .env
+    volumes:
+      - ./api/:/api
+  web-server:
+    image: web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: ${WEB_SERVER_HOST}
+    env_file: .env
+    volumes:
+      - ./web:/web
+  mysql-server:
+    image: mysql:latest
+    container_name: mysql-c
+    env_file: .env
+    #ports:
+     # - 3306:3306
+    volumes:
+      - ./mysql/initdb:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+volumes:
+  mysql-data:
