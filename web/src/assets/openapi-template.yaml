@@ -1,0 +1,283 @@
+openapi: 3.0.4
+info:
+  version: "1.0.0"
+  title: "projectName powered by Crudly-API"
+  description: "A custom API powered by Crudly-API infrastructure."
+
+servers:
+  - url: https://crudly-api.com/api/v1
+    description: API Server
+
+paths:
+  /{project}/{table}:
+    parameters:
+      - $ref: "#/components/parameters/Project"
+      - $ref: "#/components/parameters/Table"
+    get:
+      description: Get all data from table
+      parameters:
+        - $ref: "#/components/parameters/SortBy"
+        - $ref: "#/components/parameters/Order"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessfulGet"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+    post:
+      description: Create a resource
+      requestBody:
+        $ref: "#/components/requestBodies/PostRequest"
+      responses:
+        201:
+          $ref: "#/components/responses/SuccessfulPost"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /{project}/{table}/{id}:
+    parameters:
+      - $ref: "#/components/parameters/Project"
+      - $ref: "#/components/parameters/Table"
+      - $ref: "#/components/parameters/Id"
+
+    get:
+      description: Get a single record by ID
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessfulGetSingle"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      description: Replace an existing resource by ID
+      requestBody:
+        $ref: "#/components/requestBodies/PutRequest"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessfulPut"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    patch:
+      description: Partially update an existing resource by ID
+      requestBody:
+        $ref: "#/components/requestBodies/PatchRequest"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessfulPatch"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      description: Delete a resource by ID
+      responses:
+        204:
+          $ref: "#/components/responses/SuccessfulDelete"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    # List All Table Schemas
+    TableRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        prop2:
+          type: string
+          example: Hello world
+        prop3:
+          type: number
+          example: 3.14
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: HTTP Status Code
+          example: 400
+        message:
+          type: string
+          description: Human-readable error message
+          example: The request body is missing required field 'name'
+
+  requestBodies:
+    PostRequest:
+      description: Create a new resource
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              # List All Refs
+              - $ref: "#/components/schemas/TableRecord"
+
+    PutRequest:
+      description: Update a complete resource
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              #List All Refs
+              - $ref: "#/components/schemas/TableRecord"
+
+    PatchRequest:
+      description: Partially update a resource
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              #List All Refs
+              - $ref: "#/components/schemas/TableRecord"
+              - type: object
+
+  parameters:
+    Project:
+      name: project
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The project name
+
+    Table:
+      name: table
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The table name
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      description: The unique identifier of the resource
+      example: 123
+
+    SortBy:
+      name: sortBy
+      in: query
+      description: Sort the results by a field name (varies by resource)
+      required: false
+      schema:
+        type: string
+        example: ?sortBy=Users
+
+    Order:
+      name: order
+      in: query
+      description: Sort the results in ascending or descending order
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+        example: ?order=asc
+
+  responses:
+    SuccessfulGet:
+      description: A successful response of table records
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              oneOf:
+                # List all tables
+                - $ref: "#/components/schemas/TableRecord"
+
+    SuccessfulGetSingle:
+      description: A successful response of a single record
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/TableRecord"
+
+    SuccessfulPost:
+      description: A Resource created successfully
+      content:
+        application/json:
+          schema:
+            oneOf:
+              # List all tables
+              - $ref: "#/components/schemas/TableRecord"
+    SuccessfulPut:
+      description: A resource updated successfully
+
+    SuccessfulPatch:
+      description: A resource partially updated successfully
+      content:
+        application/json:
+          schema:
+            oneOf:
+              # List all tables
+              - $ref: "#/components/schemas/TableRecord"
+
+    SuccessfulDelete:
+      description: Resource deleted successfully.
+
+    BadRequest:
+      description: Bad request - invalid input or missing required fields
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: "404"
+            message: "Resource not found"
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: "500"
+            message: "An unexpected error occurred"
+
+x-projectName:
+
+x-foreignKeys:

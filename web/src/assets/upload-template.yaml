@@ -1,0 +1,20 @@
+schemas:
+  # List All Table Schemas
+  TableRecord:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 4
+      prop2:
+        type: string
+        example: Hello world
+      prop3:
+        type: number
+        example: 3.14
+x-projectName: name
+x-foreignKeys:
+  - fromTable: Orders
+    fromField: userId
+    toTable: Users
+    toField: id
