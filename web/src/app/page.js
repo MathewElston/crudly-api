@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
-import FileEnforcer from "../../lib/enforcer/FileEnforcer.js";
+import FileEnforcer from "../lib/enforcer/FileEnforcer.js";
 
 const fileEnforcer = new FileEnforcer({
   allowedContentTypes: ["application/yaml"],
