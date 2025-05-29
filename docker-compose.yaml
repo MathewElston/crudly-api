@@ -1,17 +1,17 @@
 services:
-  nginx:
-    image: reverse-proxy
-    restart: always
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: ${NGINX_HOST}
-    env_file: .env
-    ports:
-      - ${NGINX_PORT}:${NGINX_PORT}
-    depends_on:
-      - api-server
-      - web-server
+  # nginx:
+  #   image: reverse-proxy
+  #   restart: always
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile
+  #   container_name: ${NGINX_HOST}
+  #   env_file: .env
+  #   ports:
+  #     - ${NGINX_PORT}:${NGINX_PORT}
+  #   depends_on:
+  #     - api-server
+  #     - web-server
   api-server:
     image: api
     build:
@@ -21,21 +21,28 @@ services:
     env_file: .env
     volumes:
       - ./api/:/api
-  web-server:
-    image: web
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    container_name: ${WEB_SERVER_HOST}
-    env_file: .env
-    volumes:
-      - ./web:/web
+    ports:
+      - ${API_SERVER_PORT}:${API_SERVER_PORT}
+  # web-server:
+  #   image: web
+  #   build:
+  #     context: ./web
+  #     dockerfile: Dockerfile
+  #   container_name: ${WEB_SERVER_HOST}
+  #   env_file: .env
+  #   environment:
+  #     # for hot reloading next docker container
+  #     - CHOKIDAR_USEPOLLING=true
+  #   volumes:
+  #     - ./web:/web
+  #   ports:
+  #     - ${WEB_SERVER_PORT}:${WEB_SERVER_PORT}
   mysql-server:
     image: mysql:latest
     container_name: mysql-c
     env_file: .env
-    #ports:
-     # - 3306:3306
+    ports:
+      - 3306:3306
     volumes:
       - ./mysql/initdb:/docker-entrypoint-initdb.d
       - mysql-data:/var/lib/mysql

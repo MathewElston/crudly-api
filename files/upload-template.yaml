@@ -12,8 +12,8 @@ schemas:
       prop3:
         type: number
         example: 3.14
-x-projectName: name
-x-foreignKeys:
+x-ProjectName: name
+x-ForeignKeys:
   - fromTable: Orders
     fromField: userId
     toTable: Users
