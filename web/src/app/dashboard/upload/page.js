@@ -1,8 +1,10 @@
+"use client";
 import FileUpload from "@/components/FileUpload";
-export default function Page() {
+export default function Upload() {
+  const handleUpload = () => console.log(handled);
   return (
     <div>
-      <FileUpload />
+      <FileUpload filetype={["yaml", "yml"]} onUpload={handleUpload} />
     </div>
   );
 }
