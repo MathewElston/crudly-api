@@ -1,7 +1,9 @@
-export async function uploadFile(formData) {
-  "use server";
+"use server";
+import yaml from "js-yaml";
+// Assume the fileData is in text form
+export async function uploadYAML(fileData) {
+  const object = yaml.load(fileData);
 
-  const file = formData.get("file");
-
+  console.log(object);
   return { success: true };
 }

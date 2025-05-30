@@ -1,33 +1,51 @@
+/*
+To do:
+- Move state out of upload component -D
+- Move state into UploadPage  - D
+- Create ServerAction
+*/
 "use client";
 import { Button, Typography, Stack, colors } from "@mui/material";
-import { useState } from "react";
 import FileEnforcer from "../lib/enforcer/FileEnforcer";
-export default function FileUpload({ fileTypes, onUpload }) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [error, setError] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadResult, setUploadResult] = useState(null);
 
+export default function FileUpload({
+  fileTypes = [],
+  onUpload,
+  selectedFile,
+  setSelectedFile,
+  error,
+  setError,
+  uploading,
+  setUploading,
+  fileContent,
+  setFileContent,
+}) {
   const fileEnforcer = new FileEnforcer({
     allowedContentTypes: ["application/yaml"],
     allowedExtensionTypes: fileTypes,
     maxFileSize: 255 * 1024 * 1024,
   });
 
+  const combinedArray = fileTypes.join(",");
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setError(null);
     try {
+      setUploading(true);
       fileEnforcer.enforce(file);
       setSelectedFile(file);
-      setUploadResult(null);
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        const content = e.target.result;
+        setFileContent(content);
+        setUploading(false);
+      };
     } catch (err) {
       setError(err.message);
       setSelectedFile(null);
-    }
-    if (!error) {
-      setSelectedFile(file);
-      setUploadResult(null);
+      setUploading(false);
     }
   };
   return (
@@ -37,22 +55,22 @@ export default function FileUpload({ fileTypes, onUpload }) {
           Select File
           <input
             type="file"
-            accept={fileTypes}
+            accept={combinedArray}
             hidden
             onChange={handleFileChange}
           />
         </Button>
-        {selectedFile && (
+        {selectedFile?.name && (
           <Typography> File Name: {selectedFile.name}</Typography>
         )}
       </Stack>
       <Button
-        disabled={!selectedFile}
-        onClick={() => onUpload(selectedFile)}
+        disabled={!selectedFile || uploading}
+        onClick={() => fileContent && onUpload(fileContent)}
         variant="contained"
         color="primary"
       >
-        Upload
+        {uploading ? "Uploading..." : "Upload"}
       </Button>
       {error && <Typography color={"error"}>{error}</Typography>}
     </Stack>
