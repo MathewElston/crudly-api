@@ -42,6 +42,7 @@ export default function FileUpload({
         setFileContent(content);
         setUploading(false);
       };
+      setError(null);
     } catch (err) {
       setError(err.message);
       setSelectedFile(null);
@@ -60,7 +61,7 @@ export default function FileUpload({
             onChange={handleFileChange}
           />
         </Button>
-        {selectedFile?.name && (
+        {!!selectedFile?.name && (
           <Typography> File Name: {selectedFile.name}</Typography>
         )}
       </Stack>

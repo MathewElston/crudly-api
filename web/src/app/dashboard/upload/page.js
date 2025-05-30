@@ -1,7 +1,7 @@
 "use client";
 import FileUpload from "@/components/FileUpload";
 import { useState } from "react";
-import { uploadYAML } from "@/server/uploadFile";
+import { uploadYAML } from "@/server/uploadYAML";
 
 export default function UploadPage() {
   const [selectedFile, setSelectedFile] = useState(null);
