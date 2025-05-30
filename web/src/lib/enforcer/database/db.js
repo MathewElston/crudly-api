@@ -1,10 +1,9 @@
 import mysql from "mysql2/promise";
-
 const db = mysql.createPool({
   host: "localhost",
-  port: process.env.DB_PORT,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+  port: 3306,
+  user: "super",
+  password: "super",
+  database: "crudlyapi",
 });
 export default db;

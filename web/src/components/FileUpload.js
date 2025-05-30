@@ -1,8 +1,5 @@
 /*
-To do:
-- Move state out of upload component -D
-- Move state into UploadPage  - D
-- Create ServerAction
+
 */
 "use client";
 import { Button, Typography, Stack, colors } from "@mui/material";
@@ -59,6 +56,7 @@ export default function FileUpload({
             accept={combinedArray}
             hidden
             onChange={handleFileChange}
+            onClick={() => setError(null)}
           />
         </Button>
         {!!selectedFile?.name && (

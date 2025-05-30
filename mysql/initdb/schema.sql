@@ -65,7 +65,7 @@ CREATE TABLE `API_Event_Logs` (
   `project_id` int,
   `api_id` int,
   `event_timestamp` timestamp,
-  `request_type` enum(GET,POST,PUT,PATCH,DELETE),
+  `request_type` enum('GET','POST','PUT','PATCH','DELETE'),
   `endpoint` varchar(255),
   `status_code` varchar(255)
 );

@@ -11,6 +11,7 @@ export default function UploadPage() {
 
   const handleUpload = async (content) => {
     try {
+      setError(null);
       setUploading(true);
       await uploadYAML(content);
     } catch (error) {
