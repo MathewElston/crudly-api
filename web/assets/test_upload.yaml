@@ -1,0 +1,40 @@
+schemas:
+  # List All Table Schemas
+  Users:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: Gregory House
+      email:
+        type: number
+        example: mail@net.com
+  Orders:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 3
+      userid:
+        type: integer
+        example: 1
+      item:
+        type: string
+        example: apples
+      quantity:
+        type: integer
+        example: 4
+      price:
+        type: number
+        example: 2.99
+
+x-ProjectName: name
+x-ForeignKeys:
+  Orders:
+    - field: userid
+      references:
+        table: Users
+        field: id

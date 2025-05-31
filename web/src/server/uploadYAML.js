@@ -1,5 +1,5 @@
 "use server";
-import db from "@/lib/enforcer/database/db";
+import db from "@/lib/database/db";
 import yaml from "js-yaml";
 // Assume the fileData is in text/string
 export async function uploadYAML(fileData) {

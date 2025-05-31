@@ -1,6 +1,6 @@
 schemas:
   # List All Table Schemas
-  TableRecord:
+  RecordExample:
     type: object
     properties:
       id:
@@ -14,7 +14,3 @@ schemas:
         example: 3.14
 x-ProjectName: name
 x-ForeignKeys:
-  - fromTable: Orders
-    fromField: userId
-    toTable: Users
-    toField: id
