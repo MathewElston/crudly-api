@@ -1,7 +1,7 @@
 openapi: 3.0.4
 info:
   version: "1.0.0"
-  title: "projectName powered by Crudly-API"
+  title: "Ordering powered by Crudly-API"
   description: "A custom API powered by Crudly-API infrastructure."
 
 servers:

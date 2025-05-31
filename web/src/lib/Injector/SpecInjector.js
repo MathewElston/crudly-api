@@ -8,6 +8,7 @@ ToDo
 
 import fs from "fs";
 import yaml from "js-yaml";
+import db from "../database/db.js";
 
 // Assumes that parameters are parsed into Javascript objects already.
 class SpecInjector {
@@ -37,3 +38,16 @@ const injectObject = yaml.load(
 //templateObject.components.schemas = injectObject.schemas;
 //console.log(templateObject.components.schemas);
 //console.log(JSON.stringify(templateObject.components.schemas, null, 2));
+
+// Read the test yaml and set user project 1 to the schema
+// const file = fs.readFileSync("../../../assets/openapi-test.yaml");
+// const testUpload = yaml.load(file);
+
+// const jsonString = JSON.stringify(testUpload);
+
+// const [results, fields] = await db.execute(
+//   "UPDATE User_Projects SET schema_definition=? WHERE id=?",
+//   [jsonString, 1]
+// );
+
+// console.log(jsonString);
