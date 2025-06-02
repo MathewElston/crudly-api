@@ -21,6 +21,7 @@ services:
     env_file: .env
     volumes:
       - ./api/:/api
+      - /api/node_modules
     ports:
       - ${API_SERVER_PORT}:${API_SERVER_PORT}
   # web-server:
