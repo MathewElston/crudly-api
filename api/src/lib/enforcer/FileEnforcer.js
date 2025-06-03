@@ -1,4 +1,3 @@
-"use strict";
 class FileEnforcer {
   constructor({ allowedContentTypes, allowedExtensionTypes, maxFileSize }) {
     this.allowedContentTypes = allowedContentTypes;
