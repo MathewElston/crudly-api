@@ -1,12 +1,15 @@
+import SchemaEnforcer from "../enforcer/SchemaEnforcer.js";
 class RecordService {
   constructor(db) {
     this.db = db;
+    this.schemaEnforcer = new SchemaEnforcer();
   }
 
   async getProjectSchema(userId, projectName) {
     const [results] = await this.db.execute(
       ` SELECT schema_definition->'$.components.schemas' AS result 
-        FROM User_Projects`,
+        FROM User_Projects
+        WHERE user_id=? AND project_name = ?`,
       [userId, projectName]
     );
     if (results.length === 0) {

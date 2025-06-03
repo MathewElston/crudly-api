@@ -1,14 +1,14 @@
-import ajv from "ajv";
+import ajv from "ajv"
 class SchemaEnforcer {
   constructor() {
-    this.ajv = new Ajv();
+    this.ajv = new ajv();
     this.schemas = {};
   }
-  
+
   registerSchema(name, schema) {
-    this.schmeas[name] = this.ajv.compile(schema);
+    this.schemas[name] = this.ajv.compile(schema);
   }
-  
+
   enforce(schemaName, data) {
     const validate = this.schemas[schemaName];
     if (!validate) {
@@ -28,3 +28,5 @@ class SchemaEnforcer {
     };
   }
 }
+
+export default SchemaEnforcer;
