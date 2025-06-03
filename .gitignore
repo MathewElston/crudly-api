@@ -49,3 +49,5 @@ next-env.d.ts
 # My Scripts:
 
 myscripts.txt
+
+/test/

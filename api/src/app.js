@@ -14,15 +14,18 @@ app.get("/:project/:table", async (req, res) => {
   const { project, table } = req.params;
   try {
     const [results, fields] = await db.execute(
-      `SELECT records FROM User_Projects WHERE id = ?`,
-      [2]
+      `SELECT records->'$.${table}' as result FROM User_Projects WHERE project_name = ?`,
+      [project]
     );
-    const records = results[0].records;
+    const records = results[0].result;
     console.log(results);
     console.log(records);
     res.json(records);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ message: "There was an internal error on the server." });
   }
 });
 
