@@ -4,6 +4,8 @@ import db from "./lib/database/db.js";
 
 import RecordService from "./lib/services/RecordService.js";
 
+import stripProperty from "./lib/utilities/stripProperty.js";
+
 const testUser = {
   userId: 1,
   projectId: 2,
@@ -54,34 +56,18 @@ app.get("/projects/:project/tables/:table", async (req, res) => {
 
 // Testing Grounds
 app.get("/", async (req, res) => {
-  const data = await recordService.getProjectSchema(
+  const schema = await recordService.getProjectSchema(
     testUser.userId,
     testUser.projectName
   );
 
-  const schemas = {};
-  for (const table in data) {
-    const tableDef = data[table];
-    const fields = tableDef.properties;
+  const cleanedSchema = stripProperty(schema, "example");
 
-    const schema = {
-      type: "object",
-      properties: {},
-      additionalProperties: false,
-    };
-    //console.log(table);
-    for (const field in fields) {
-      const fieldDef = fields[field];
-
-      schema.properties[field] = {
-        type: fieldDef.type,
-      };
-      console.log(schema);
-    }
-    schemas[table] = schema;
+  for (const table in cleanedSchema) {
+    recordService.schemaEnforcer.registerSchema(table, cleanedSchema[table]);
   }
-
-  res.json({ schemas: schemas, data: data });
+  //
+  res.json(cleanedSchema);
 });
 
 const PORT = process.env.API_SERVER_PORT || 3000;
