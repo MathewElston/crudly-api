@@ -1,4 +1,4 @@
-import ajv from "ajv"
+import ajv from "ajv";
 class SchemaEnforcer {
   constructor() {
     this.ajv = new ajv();

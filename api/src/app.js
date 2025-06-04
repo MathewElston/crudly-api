@@ -14,25 +14,7 @@ const recordService = new RecordService(db);
 
 const app = express();
 
-app.get("/:project/:table", async (req, res) => {
-  const { project, table } = req.params;
-
-  /*  No class  try {
-    const [results, fields] = await db.execute(
-      `SELECT records->'$.${table}' as result FROM User_Projects WHERE project_name = ?`,
-      [project]
-    );
-    const records = results[0].result;
-    res.json(records);
-  } catch (error) {
-    console.error(error.message);
-    res
-      .status(500)
-      .json({ message: "There was an internal error on the server." });
-  } */
-});
-
-app.get("/:project", async (req, res) => {
+app.get("/project/:project", async (req, res) => {
   const { project } = req.params;
 
   try {
@@ -44,11 +26,29 @@ app.get("/:project", async (req, res) => {
   } catch (error) {
     console.error(error.status);
     if (error.status === 404) {
-      return res.status(404), json({ message: error.message });
+      return res.status(404).json({ message: error.message });
     }
     return res.status(500).json({
       message: error.message,
     });
+  }
+});
+
+app.get("/projects/:project/tables/:table", async (req, res) => {
+  const { project, table } = req.params;
+
+  try {
+    const [results] = await db.execute(
+      `SELECT records->'$.${table}' as result FROM User_Projects WHERE project_name = ?`,
+      [project]
+    );
+    const records = results[0].result;
+    res.json(records);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ message: "There was an internal error on the server." });
   }
 });
 
@@ -58,19 +58,30 @@ app.get("/", async (req, res) => {
     testUser.userId,
     testUser.projectName
   );
-  const schema = {};
-  console.log(data);
+
+  const schemas = {};
   for (const table in data) {
-    console.log(`Table: ${table}`);
-    const fields = data[table].properties;
-    for (const fieldName in fields) {
-      const field = fields[fieldName];
-      console.log(
-        `Field: ${fieldName}, Type: ${field.type}, Example: ${field.example}`
-      );
+    const tableDef = data[table];
+    const fields = tableDef.properties;
+
+    const schema = {
+      type: "object",
+      properties: {},
+      additionalProperties: false,
+    };
+    //console.log(table);
+    for (const field in fields) {
+      const fieldDef = fields[field];
+
+      schema.properties[field] = {
+        type: fieldDef.type,
+      };
+      console.log(schema);
     }
+    schemas[table] = schema;
   }
-  res.json(data);
+
+  res.json({ schemas: schemas, data: data });
 });
 
 const PORT = process.env.API_SERVER_PORT || 3000;

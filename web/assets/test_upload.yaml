@@ -10,7 +10,7 @@ schemas:
         type: string
         example: Gregory House
       email:
-        type: number
+        type: string
         example: mail@net.com
   Orders:
     type: object
