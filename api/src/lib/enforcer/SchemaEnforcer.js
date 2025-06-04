@@ -8,6 +8,9 @@ class SchemaEnforcer {
   registerSchema(name, schema) {
     this.schemas[name] = this.ajv.compile(schema);
   }
+  clearSchema() {
+    this.schemas = {};
+  }
 
   enforce(schemaName, data) {
     const validate = this.schemas[schemaName];

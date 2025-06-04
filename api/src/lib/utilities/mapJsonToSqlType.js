@@ -12,3 +12,5 @@ function mapJsonToSqlType(jsonType) {
       return "VARCHAR(255)";
   }
 }
+
+export default mapJsonToSqlType;

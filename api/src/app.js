@@ -54,6 +54,25 @@ app.get("/projects/:project/tables/:table", async (req, res) => {
   }
 });
 
+app.get("/projects/:project/tables/:table/:id", async (req, res) => {
+  const { project, table, id } = req.params;
+
+  const result = await recordService.getRecord(
+    testUser.userId,
+    project,
+    table,
+    id
+  );
+
+  res.json(result);
+});
+
+
+app.post("/projects/:project/tables/:table", async (req, res) => {
+  recordService.createRecord(testUser.userId, project)
+  
+});
+
 // Testing Grounds
 app.get("/", async (req, res) => {
   const schema = await recordService.getProjectSchema(
