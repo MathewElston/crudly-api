@@ -15,6 +15,7 @@ const testUser = {
 const recordService = new RecordService(db);
 
 const app = express();
+app.use(express.json());
 
 app.get("/project/:project", async (req, res) => {
   const { project } = req.params;
@@ -67,10 +68,26 @@ app.get("/projects/:project/tables/:table/:id", async (req, res) => {
   res.json(result);
 });
 
-
 app.post("/projects/:project/tables/:table", async (req, res) => {
-  recordService.createRecord(testUser.userId, project)
-  
+  const { project, table } = req.params;
+  const { data } = req.body;
+  try {
+    const { valid, errors } = await recordService.createRecord(
+      testUser.userId,
+      project,
+      table,
+      data
+    );
+    if (valid) {
+      return res.status(200).json({ message: "Record added!" });
+    } else {
+      return res.status(400).json({ error: errors });
+    }
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({ error: "Server Error" });
+  }
 });
 
 // Testing Grounds

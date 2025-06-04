@@ -97,7 +97,7 @@ class RecordService {
     this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
     const validationObject = this.schemaEnforcer.enforce(tableName, data);
     if (validationObject.valid) {
-      this.db.execute(
+      await this.db.execute(
         `UPDATE User_Projects
         set records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
         WHERE user_id = ? AND project_name = ?

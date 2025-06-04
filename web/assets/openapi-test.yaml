@@ -105,6 +105,10 @@ components:
     # List All Table Schemas
     Users:
       type: object
+      required:
+        - id
+        - name
+        - email
       properties:
         id:
           type: integer
@@ -115,9 +119,16 @@ components:
         email:
           type: string
           example: mail@net.com
+      additionalProperties: false
 
     Orders:
       type: object
+      required:
+        - id
+        - userId
+        - item
+        - quantity
+        - price
       properties:
         id:
           type: integer
@@ -134,7 +145,7 @@ components:
         price:
           type: number
           example: 2.99
-
+      additionalProperties: false
     Error:
       type: object
       required:
@@ -149,6 +160,7 @@ components:
           type: string
           description: Human-readable error message
           example: The request body is missing required field 'name'
+      additionalProperties: false
 
   requestBodies:
     PostRequest:
