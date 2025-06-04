@@ -4,7 +4,6 @@ import yaml from "js-yaml";
 // Assume the fileData is in text/string
 export async function uploadYAML(fileData) {
   const object = yaml.load(fileData);
-  console.log("DB user:", process.env.MYSQL_USER);
 
   const jsonString = JSON.stringify(object);
 
@@ -12,7 +11,7 @@ export async function uploadYAML(fileData) {
     "UPDATE User_Projects SET schema_definition=? WHERE id=?",
     [jsonString, 1]
   );
-  console.log(results);
+  console.log(jsonString);
 
   return { success: true };
 }

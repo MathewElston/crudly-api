@@ -9,7 +9,7 @@ servers:
     description: API Server
 
 paths:
-  /{project}/{table}:
+  /projects/{project}/tables/{table}:
     parameters:
       - $ref: "#/components/parameters/Project"
       - $ref: "#/components/parameters/Table"
@@ -41,7 +41,7 @@ paths:
         500:
           $ref: "#/components/responses/InternalError"
 
-  /{project}/{table}/{id}:
+  /projects{project}/tables/{table}/{id}:
     parameters:
       - $ref: "#/components/parameters/Project"
       - $ref: "#/components/parameters/Table"
