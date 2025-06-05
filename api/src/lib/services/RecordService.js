@@ -53,7 +53,9 @@ class RecordService {
     }
 
     const records = results[0].result;
-
+    if (typeof records === "string") {
+      records = JSON.parse(records);
+    }
     return records;
   }
   async getRecord(userId, projectName, tableName, recordId) {
@@ -106,6 +108,41 @@ class RecordService {
       );
     }
     return validationObject;
+  }
+
+  async createRecords(userId, projectName, tableName, dataList) {
+    // Validate all the records add schemas before creating all records
+    for (const data of dataList) {
+      await this.createRecord(userId, projectName, tableName, data);
+    }
+  }
+
+  async updateRecord(userId, projectName, tableName, recordId, data) {
+    const projectSchema = await this.getProjectSchema(userId, projectName);
+    const tableSchema = projectSchema[tableName];
+
+    if (!tableSchema) {
+      throw new Error(`No schema for table ${tableName}`);
+    }
+
+    const cleanedSchema = stripProperty(tableSchema, "example");
+
+    this.schemaEnforcer.clearSchema();
+    this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
+    const validationObject = this.schemaEnforcer.enforce(tableName, data);
+
+    if (validationObject.valid) {
+      const currentRecord = await this.getTableRecords(
+        userId,
+        projectName,
+        tableName
+      );
+      const index = currentRecord.findIndex((item) => item.id === recordId);
+      // spread the currentRecord and overwrite it with the spead ...data
+      const updateRecord = { ...currentRecord[index], ...data };
+      return { validationObject, updateRecord };
+    }
+    return { validationObject, updateRecord: null };
   }
 }
 export default RecordService;

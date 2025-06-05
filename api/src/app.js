@@ -72,6 +72,7 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
   const { project, table } = req.params;
   const { data } = req.body;
   try {
+    // Add check if multiple data points and then route to add 1 record or multiple
     const { valid, errors } = await recordService.createRecord(
       testUser.userId,
       project,
@@ -87,6 +88,33 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
     console.error(error);
 
     return res.status(500).json({ error: "Server Error" });
+  }
+});
+
+app.put("/projects/:project/tables/:table/:id", async (req, res) => {
+  const { project, table, id } = req.params;
+  const { data } = req.body;
+  const recordId = Number(id);
+  try {
+    const { validationObject, updateRecord } = await recordService.updateRecord(
+      testUser.userId,
+      project,
+      table,
+      recordId,
+      data
+    );
+
+    const { valid, errors } = validationObject;
+    if (valid) {
+      res.status(200).json(updateRecord);
+    } else {
+      res.status(400).json({ message: errors });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "There was a problem an internal problem the server." });
   }
 });
 
