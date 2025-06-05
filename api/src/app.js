@@ -25,6 +25,7 @@ app.get("/project/:project", async (req, res) => {
       testUser.userId,
       project
     );
+
     res.json(results);
   } catch (error) {
     console.error(error.status);
@@ -58,13 +59,14 @@ app.get("/projects/:project/tables/:table", async (req, res) => {
 app.get("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
 
+  const recordId = Number(id);
+
   const result = await recordService.getRecord(
     testUser.userId,
     project,
     table,
-    id
+    recordId
   );
-
   res.json(result);
 });
 

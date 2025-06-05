@@ -52,7 +52,7 @@ class RecordService {
       throw new Error("No records found");
     }
 
-    const records = results[0].result;
+    let records = results[0].result;
     if (typeof records === "string") {
       records = JSON.parse(records);
     }
@@ -138,8 +138,17 @@ class RecordService {
         tableName
       );
       const index = currentRecord.findIndex((item) => item.id === recordId);
-      // spread the currentRecord and overwrite it with the spead ...data
+      // spread the ...currentRecord key sand values and overwrite it with the spead ...data
       const updateRecord = { ...currentRecord[index], ...data };
+      currentRecord[index] = updateRecord;
+      console.log(currentRecord);
+
+      await this.db.execute(
+        `UPDATE User_Projects
+        SET records = JSON_SET(records, '$.${tableName}', CAST(? as JSON))
+        WHERE user_id = ? AND project_name = ?`,
+        [JSON.stringify(currentRecord), userId, projectName]
+      );
       return { validationObject, updateRecord };
     }
     return { validationObject, updateRecord: null };
