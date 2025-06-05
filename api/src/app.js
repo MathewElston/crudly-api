@@ -148,6 +148,19 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
   }
 });
 
+app.delete("/projects/:project/tables/:table/:id", async (req, res) => {
+  const { project, table, id } = req.params;
+  const recordId = Number(id);
+  const result = await recordService.deleteRecord(
+    testUser.userId,
+    project,
+    table,
+    recordId
+  );
+
+  res.status(200).json({ message: `id ${recordId} removed from ${table}` });
+});
+
 // Testing Grounds
 app.get("/", async (req, res) => {
   const schema = await recordService.getProjectSchema(

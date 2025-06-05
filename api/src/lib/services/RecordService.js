@@ -85,7 +85,7 @@ class RecordService {
     );
     return results[0];
   }
-  async createRecord(userId, projectName, tableName, partialData) {
+  async createRecord(userId, projectName, tableName, data) {
     const projectSchema = await this.getProjectSchema(userId, projectName);
     const tableSchema = projectSchema[tableName];
 
@@ -97,17 +97,14 @@ class RecordService {
 
     this.schemaEnforcer.clearSchema();
     this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
-    const validationObject = this.schemaEnforcer.enforce(
-      tableName,
-      partialData
-    );
+    const validationObject = this.schemaEnforcer.enforce(tableName, data);
     if (validationObject.valid) {
       await this.db.execute(
         `UPDATE User_Projects
         set records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
         WHERE user_id = ? AND project_name = ?
         `,
-        [JSON.stringify(partialData), userId, projectName]
+        [JSON.stringify(data), userId, projectName]
       );
     }
     return validationObject;
@@ -204,6 +201,23 @@ class RecordService {
       return { validationObject, updateRecord };
     }
     return { validationObject, updateRecord: null };
+  }
+  async deleteRecord(userId, projectName, tableName, recordId) {
+    const currentRecords = await this.getTableRecords(
+      userId,
+      projectName,
+      tableName
+    );
+    console.log(currentRecords);
+    const filteredRecords = currentRecords.filter(
+      (record) => record.id != recordId
+    );
+    await this.db.execute(
+      `UPDATE User_Projects
+        SET records = JSON_SET(records, '$.${tableName}', CAST(? as JSON))
+        WHERE user_id = ? AND project_name = ?`,
+      [JSON.stringify(filteredRecords), userId, projectName]
+    );
   }
 }
 export default RecordService;
