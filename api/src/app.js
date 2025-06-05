@@ -120,6 +120,34 @@ app.put("/projects/:project/tables/:table/:id", async (req, res) => {
   }
 });
 
+app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
+  const { project, table, id } = req.params;
+  const { data } = req.body;
+  const recordId = Number(id);
+  try {
+    const { validationObject, updateRecord } =
+      await recordService.partialUpdateRecord(
+        testUser.userId,
+        project,
+        table,
+        recordId,
+        data
+      );
+
+    const { valid, errors } = validationObject;
+    if (valid) {
+      res.status(200).json(updateRecord);
+    } else {
+      res.status(400).json({ message: errors });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "There was a problem an internal problem the server." });
+  }
+});
+
 // Testing Grounds
 app.get("/", async (req, res) => {
   const schema = await recordService.getProjectSchema(

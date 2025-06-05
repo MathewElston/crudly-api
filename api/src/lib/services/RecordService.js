@@ -85,7 +85,7 @@ class RecordService {
     );
     return results[0];
   }
-  async createRecord(userId, projectName, tableName, data) {
+  async createRecord(userId, projectName, tableName, partialData) {
     const projectSchema = await this.getProjectSchema(userId, projectName);
     const tableSchema = projectSchema[tableName];
 
@@ -97,14 +97,17 @@ class RecordService {
 
     this.schemaEnforcer.clearSchema();
     this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
-    const validationObject = this.schemaEnforcer.enforce(tableName, data);
+    const validationObject = this.schemaEnforcer.enforce(
+      tableName,
+      partialData
+    );
     if (validationObject.valid) {
       await this.db.execute(
         `UPDATE User_Projects
         set records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
         WHERE user_id = ? AND project_name = ?
         `,
-        [JSON.stringify(data), userId, projectName]
+        [JSON.stringify(partialData), userId, projectName]
       );
     }
     return validationObject;
@@ -129,7 +132,10 @@ class RecordService {
 
     this.schemaEnforcer.clearSchema();
     this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
-    const validationObject = this.schemaEnforcer.enforce(tableName, data);
+    const validationObject = this.schemaEnforcer.enforcePartial(
+      tableName,
+      data
+    );
 
     if (validationObject.valid) {
       const currentRecord = await this.getTableRecords(
@@ -140,6 +146,52 @@ class RecordService {
       const index = currentRecord.findIndex((item) => item.id === recordId);
       // spread the ...currentRecord key sand values and overwrite it with the spead ...data
       const updateRecord = { ...currentRecord[index], ...data };
+      currentRecord[index] = updateRecord;
+      console.log(currentRecord);
+
+      await this.db.execute(
+        `UPDATE User_Projects
+        SET records = JSON_SET(records, '$.${tableName}', CAST(? as JSON))
+        WHERE user_id = ? AND project_name = ?`,
+        [JSON.stringify(currentRecord), userId, projectName]
+      );
+      return { validationObject, updateRecord };
+    }
+    return { validationObject, updateRecord: null };
+  }
+
+  async partialUpdateRecord(
+    userId,
+    projectName,
+    tableName,
+    recordId,
+    partialData
+  ) {
+    const projectSchema = await this.getProjectSchema(userId, projectName);
+    const tableSchema = projectSchema[tableName];
+
+    if (!tableSchema) {
+      throw new Error(`No schema for table ${tableName}`);
+    }
+
+    const cleanedSchema = stripProperty(tableSchema, "example");
+
+    this.schemaEnforcer.clearSchema();
+    this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
+    const validationObject = this.schemaEnforcer.enforcePartial(
+      tableName,
+      partialData
+    );
+
+    if (validationObject.valid) {
+      const currentRecord = await this.getTableRecords(
+        userId,
+        projectName,
+        tableName
+      );
+      const index = currentRecord.findIndex((item) => item.id === recordId);
+      // spread the ...currentRecord key sand values and overwrite it with the spead ...partialData
+      const updateRecord = { ...currentRecord[index], ...partialData };
       currentRecord[index] = updateRecord;
       console.log(currentRecord);
 
