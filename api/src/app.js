@@ -129,18 +129,14 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
 
   try {
     // Add check if multiple data points and then route to add 1 record or multiple
-    const { results, valid, errors } = await recordService.createRecord(
-      testUser.userId,
-      project,
-      table,
-      data
-    );
+    const { updatedData, results, valid, errors } =
+      await recordService.createRecord(testUser.userId, project, table, data);
     if (valid) {
       if (results && results.affectedRows > 0) {
         return res.status(201).json({
           success: true,
           message: `${table} record added successfully.`,
-          data: results,
+          data: updatedData,
         });
       }
 

@@ -105,6 +105,8 @@ class RecordService {
     );
 
     validationObject.results = results;
+    validationObject.updatedData = data;
+
     return validationObject;
   }
 
