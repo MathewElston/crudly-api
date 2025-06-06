@@ -48,10 +48,6 @@ class RecordService {
       [userId, projectName]
     );
 
-    if (results.length === 0) {
-      throw new Error("No records found");
-    }
-
     let records = results[0].result;
     if (typeof records === "string") {
       records = JSON.parse(records);
@@ -85,6 +81,7 @@ class RecordService {
     );
     return results[0];
   }
+
   async createRecord(userId, projectName, tableName, data) {
     const projectSchema = await this.getProjectSchema(userId, projectName);
     const tableSchema = projectSchema[tableName];
@@ -98,15 +95,20 @@ class RecordService {
     this.schemaEnforcer.clearSchema();
     this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
     const validationObject = this.schemaEnforcer.enforce(tableName, data);
-    if (validationObject.valid) {
-      await this.db.execute(
-        `UPDATE User_Projects
+
+    if (!validationObject.valid) {
+      return validationObject;
+    }
+
+    const [results] = await this.db.execute(
+      `UPDATE User_Projects
         set records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
         WHERE user_id = ? AND project_name = ?
         `,
-        [JSON.stringify(data), userId, projectName]
-      );
-    }
+      [JSON.stringify(data), userId, projectName]
+    );
+
+    validationObject.results = results;
     return validationObject;
   }
 
@@ -140,21 +142,24 @@ class RecordService {
         projectName,
         tableName
       );
+      
       const index = currentRecord.findIndex((item) => item.id === recordId);
       // spread the ...currentRecord key sand values and overwrite it with the spead ...data
       const updateRecord = { ...currentRecord[index], ...data };
       currentRecord[index] = updateRecord;
       console.log(currentRecord);
 
-      await this.db.execute(
+      const [results] = await this.db.execute(
         `UPDATE User_Projects
         SET records = JSON_SET(records, '$.${tableName}', CAST(? as JSON))
         WHERE user_id = ? AND project_name = ?`,
         [JSON.stringify(currentRecord), userId, projectName]
       );
-      return { validationObject, updateRecord };
+      validationObject.results = results;
+      return validationObject;
     }
-    return { validationObject, updateRecord: null };
+    validationObject.results = null;
+    return validationObject;
   }
 
   async partialUpdateRecord(
