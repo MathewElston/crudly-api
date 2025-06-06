@@ -231,10 +231,11 @@ class RecordService {
         WHERE user_id = ? AND project_name = ?`,
       [JSON.stringify(filteredRecords), userId, projectName]
     );
-    if (results.affectedRows > 0) {
-      return true;
+
+    if (filteredRecords.length === currentRecords.length) {
+      return false;
     }
-    return false;
+    return results.affectedRows > 0;
   }
 }
 export default RecordService;

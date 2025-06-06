@@ -169,20 +169,21 @@ app.put("/projects/:project/tables/:table/:id", async (req, res) => {
   const recordId = Number(id);
 
   try {
-    const { valid, errors, results } = await recordService.updateRecord(
-      testUser.userId,
-      project,
-      table,
-      recordId,
-      data
-    );
+    const { updateRecord, valid, errors, results } =
+      await recordService.updateRecord(
+        testUser.userId,
+        project,
+        table,
+        recordId,
+        data
+      );
 
     if (valid) {
       if (results && results.affectedRows > 0) {
         return res.status(200).json({
           success: true,
           message: `${table} record updated successfully.`,
-          data: results,
+          data: updateRecord,
         });
       }
     }
@@ -209,13 +210,14 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
   const recordId = Number(id);
 
   try {
-    const { updateRecord, valid, errors, results } = await recordService.partialUpdateRecord(
-      testUser.userId,
-      project,
-      table,
-      recordId,
-      data
-    );
+    const { updateRecord, valid, errors, results } =
+      await recordService.partialUpdateRecord(
+        testUser.userId,
+        project,
+        table,
+        recordId,
+        data
+      );
 
     if (valid) {
       if (results && results.affectedRows > 0) {
@@ -246,6 +248,7 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
 app.delete("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
   const recordId = Number(id);
+
   try {
     const isDeleted = await recordService.deleteRecord(
       testUser.userId,
