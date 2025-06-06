@@ -32,12 +32,7 @@ class RecordService {
       [userId, projectName]
     );
 
-    if (results.length === 0) {
-      throw new Error("No records found.");
-    }
-    const records = results[0].result;
-
-    return records;
+    return results;
   }
 
   async getTableRecords(userId, projectName, tableName) {
