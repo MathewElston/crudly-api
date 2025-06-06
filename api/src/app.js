@@ -100,7 +100,7 @@ app.get("/projects/:project/tables/:table/:id", async (req, res) => {
       recordId
     );
 
-    if (result && result.length > 0) {
+    if (result) {
       return res.status(200).json({
         success: true,
         message: "Table record successfully returned.",

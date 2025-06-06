@@ -74,6 +74,7 @@ class RecordService {
     WHERE orders.id = ? AND User_Projects.user_id = ? AND project_name = ?`,
       [recordId, userId, projectName]
     );
+    console.log(results[0]);
     return results[0];
   }
 
