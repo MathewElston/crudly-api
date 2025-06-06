@@ -209,7 +209,7 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
   const recordId = Number(id);
 
   try {
-    const { valid, errors, results } = await recordService.partialUpdateRecord(
+    const { updateRecord, valid, errors, results } = await recordService.partialUpdateRecord(
       testUser.userId,
       project,
       table,
@@ -222,7 +222,7 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
         return res.status(200).json({
           success: true,
           message: `${table} record updated successfully.`,
-          data: results,
+          data: updateRecord,
         });
       }
     }

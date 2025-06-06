@@ -155,9 +155,12 @@ class RecordService {
         [JSON.stringify(currentRecord), userId, projectName]
       );
       validationObject.results = results;
+      validationObject.updateRecord = updateRecord;
       return validationObject;
     }
+
     validationObject.results = null;
+    validationObject.updateRecord = null;
     return validationObject;
   }
 
@@ -203,9 +206,11 @@ class RecordService {
         [JSON.stringify(currentRecord), userId, projectName]
       );
       validationObject.results = results;
+      validationObject.updateRecord = updateRecord;
       return validationObject;
     }
     validationObject.results = null;
+    validationObject.updateRecord = null;
     return validationObject;
   }
   async deleteRecord(userId, projectName, tableName, recordId) {
