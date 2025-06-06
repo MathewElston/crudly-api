@@ -23,7 +23,7 @@ const recordService = new RecordService(db);
 const app = express();
 app.use(express.json());
 
-app.get("/project/:project", async (req, res) => {
+app.get("/projects/:project", async (req, res) => {
   const { project } = req.params;
 
   try {
@@ -59,7 +59,7 @@ app.get("/projects/:project/tables/:table", async (req, res) => {
   const { project, table } = req.params;
 
   try {
-    const results = recordService.getTableRecords(
+    const results = await recordService.getTableRecords(
       testUser.userId,
       project,
       table
@@ -90,7 +90,6 @@ app.get("/projects/:project/tables/:table", async (req, res) => {
 
 app.get("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
-
   const recordId = Number(id);
 
   try {
@@ -137,7 +136,7 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
       data
     );
     if (valid) {
-      if (results && results.length > 0) {
+      if (results && results.affectedRows > 0) {
         return res.status(201).json({
           success: true,
           message: `${table} record added successfully.`,
@@ -151,7 +150,7 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
         data: null,
       });
     }
-    
+
     return res.status(400).json({
       success: false,
       message: "Unable to create resource.",
@@ -172,8 +171,9 @@ app.put("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
   const { data } = req.body;
   const recordId = Number(id);
+
   try {
-    const { validationObject, updateRecord } = await recordService.updateRecord(
+    const { valid, errors, results } = await recordService.updateRecord(
       testUser.userId,
       project,
       table,
@@ -181,17 +181,29 @@ app.put("/projects/:project/tables/:table/:id", async (req, res) => {
       data
     );
 
-    const { valid, errors } = validationObject;
     if (valid) {
-      res.status(200).json(updateRecord);
-    } else {
-      res.status(400).json({ message: errors });
+      if (results && results.affectedRows > 0) {
+        return res.status(200).json({
+          success: true,
+          message: `${table} record updated successfully.`,
+          data: results,
+        });
+      }
     }
+
+    return res.status(400).json({
+      success: false,
+      message: "Unable to update resource.",
+      data: null,
+      errors: errors,
+    });
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "There was a problem an internal problem the server." });
+    console.error(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "An unexpected error occurred.",
+      data: null,
+    });
   }
 });
 
@@ -199,36 +211,73 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
   const { data } = req.body;
   const recordId = Number(id);
-  try {
-    const { validationObject, updateRecord } =
-      await recordService.partialUpdateRecord(
-        testUser.userId,
-        project,
-        table,
-        recordId,
-        data
-      );
 
-    const { valid, errors } = validationObject;
+  try {
+    const { valid, errors, results } = await recordService.partialUpdateRecord(
+      testUser.userId,
+      project,
+      table,
+      recordId,
+      data
+    );
+
     if (valid) {
-      res.status(200).json(updateRecord);
-    } else {
-      res.status(400).json({ message: errors });
+      if (results && results.affectedRows > 0) {
+        return res.status(200).json({
+          success: true,
+          message: `${table} record updated successfully.`,
+          data: results,
+        });
+      }
     }
+
+    return res.status(400).json({
+      success: false,
+      message: "Unable to update resource.",
+      data: null,
+      errors: errors,
+    });
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "There was a problem an internal problem the server." });
+    console.error(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "An unexpected error occurred.",
+      data: null,
+    });
   }
 });
 
 app.delete("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
   const recordId = Number(id);
-  await recordService.deleteRecord(testUser.userId, project, table, recordId);
+  try {
+    const isDeleted = await recordService.deleteRecord(
+      testUser.userId,
+      project,
+      table,
+      recordId
+    );
+    if (isDeleted) {
+      return res.status(200).json({
+        success: true,
+        message: `Table ${table} record id: ${recordId} successfully deleted.`,
+        data: null,
+      });
+    }
 
-  res.status(200).json({ message: `id ${recordId} removed from ${table}` });
+    return res.status(404).json({
+      success: false,
+      message:
+        "Project, Table, or Record not found. Check your URI and try again.",
+      data: null,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "An unexpected error occurred.",
+      data: null,
+    });
+  }
 });
 
 // Testing Grounds

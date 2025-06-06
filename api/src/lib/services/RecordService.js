@@ -142,9 +142,10 @@ class RecordService {
         projectName,
         tableName
       );
-      
+
       const index = currentRecord.findIndex((item) => item.id === recordId);
-      // spread the ...currentRecord key sand values and overwrite it with the spead ...data
+
+      // spread the ...currentRecord keys and values and overwrite it with the spread ...data
       const updateRecord = { ...currentRecord[index], ...data };
       currentRecord[index] = updateRecord;
       console.log(currentRecord);
@@ -197,15 +198,17 @@ class RecordService {
       currentRecord[index] = updateRecord;
       console.log(currentRecord);
 
-      await this.db.execute(
+      const [results] = await this.db.execute(
         `UPDATE User_Projects
         SET records = JSON_SET(records, '$.${tableName}', CAST(? as JSON))
         WHERE user_id = ? AND project_name = ?`,
         [JSON.stringify(currentRecord), userId, projectName]
       );
-      return { validationObject, updateRecord };
+      validationObject.results = results;
+      return validationObject;
     }
-    return { validationObject, updateRecord: null };
+    validationObject.results = null;
+    return validationObject;
   }
   async deleteRecord(userId, projectName, tableName, recordId) {
     const currentRecords = await this.getTableRecords(
@@ -213,16 +216,22 @@ class RecordService {
       projectName,
       tableName
     );
-    console.log(currentRecords);
+    if (!currentRecords || currentRecords.length === 0) {
+      return false;
+    }
     const filteredRecords = currentRecords.filter(
       (record) => record.id != recordId
     );
-    await this.db.execute(
+    const [results] = await this.db.execute(
       `UPDATE User_Projects
         SET records = JSON_SET(records, '$.${tableName}', CAST(? as JSON))
         WHERE user_id = ? AND project_name = ?`,
       [JSON.stringify(filteredRecords), userId, projectName]
     );
+    if (results.affectedRows > 0) {
+      return true;
+    }
+    return false;
   }
 }
 export default RecordService;
