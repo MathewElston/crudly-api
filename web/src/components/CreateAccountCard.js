@@ -31,7 +31,7 @@ export default function CreateAccountCard({
     event.preventDefault(), handleCreate(formData);
   };
   return (
-    <Paper sx={{ width: "20%", overflowY: "auto", p: 3 }}>
+    <Paper sx={{ width: "30%", overflow: "auto", p: 3 }}>
       <Box
         component="form"
         onSubmit={handleSubmit}

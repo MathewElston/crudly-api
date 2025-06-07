@@ -6,5 +6,16 @@ export default function CreateAccountPage() {
   const onCreate = (data) => {
     console.log(data);
   };
-  return <CreateAccountCard handleCreate={onCreate} />;
+  return (
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <CreateAccountCard handleCreate={onCreate} />;
+    </Box>
+  );
 }

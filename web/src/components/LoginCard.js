@@ -32,7 +32,7 @@ export default function LoginCard({
     event.preventDefault(), onLogin(formData);
   };
   return (
-    <Paper sx={{ width: "20%", overflow: "auto", p: 3 }}>
+    <Paper sx={{ width: "30%", overflow: "auto", p: 3 }}>
       <Box
         component="form"
         onSubmit={handleSubmit}
