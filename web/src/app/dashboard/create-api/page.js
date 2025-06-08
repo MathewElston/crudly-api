@@ -80,18 +80,30 @@ export default function CreateApiPage() {
               2. Place the modified contents into your own YAML file, select the
               file, and click Create API.
             </Typography>
-            <FileUpload
-              fileTypes={["yaml", "yml"]}
-              onUpload={handleUpload}
-              selectedFile={selectedFile}
-              setSelectedFile={setSelectedFile}
-              error={error}
-              setError={setError}
-              uploading={uploading}
-              setUploading={setUploading}
-              fileContent={fileContent}
-              setFileContent={setFileContent}
-            />
+            <Stack direction={"row"} justifyContent={"space-between"}>
+                <FileUpload
+                  fileTypes={["yaml", "yml"]}
+                  onUpload={handleUpload}
+                  selectedFile={selectedFile}
+                  setSelectedFile={setSelectedFile}
+                  error={error}
+                  setError={setError}
+                  uploading={uploading}
+                  setUploading={setUploading}
+                  fileContent={fileContent}
+                  setFileContent={setFileContent}
+                />
+                <Typography variant="body1">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                  efficitur, justo nec efficitur bibendum, enim justo luctus mi, ac
+                  sodales magna nibh ut enim. Vestibulum ante ipsum primis in
+                  faucibus orci luctus et ultrices posuere cubilia curae; Sed
+                  porttitor consectetur nisi, vel lobortis ligula porttitor sed.
+                  Quisque sit amet sodales erat. Nullam pretium, orci non rhoncus
+                  pretium, libero nunc dictum turpis, at vestibulum turpis nisi vel
+                  leo.
+                </Typography>
+            </Stack>
           </Stack>
         )}
         {apiSelect && <Button variant="contained">Create API </Button>}
