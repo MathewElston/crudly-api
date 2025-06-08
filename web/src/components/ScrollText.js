@@ -4,7 +4,8 @@ export default function ScrollText({ text }) {
   return (
     <Box
       sx={{
-        p: 2,
+        width: "80%",
+        maxWidth: "600px",
         borderRadius: 2,
         overflowY: "auto",
         maxHeight: 250,

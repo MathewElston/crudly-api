@@ -1,5 +1,6 @@
 "use client";
 import { Paper } from "@mui/material";
+import theme from "@/lib/styles/theme";
 
 export default function HoverCard({
   cardWidth = "40%",
@@ -19,7 +20,7 @@ export default function HoverCard({
         border: "1px solid transparent",
         "&:hover": {
           border: "1px solid",
-          borderColor: "tertiary.main",
+          borderColor: theme.palette.tertiary.dark,
         },
         ...sx,
       }}
