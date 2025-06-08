@@ -12,7 +12,27 @@ export default function CreateApiPage() {
     alignItems: "center",
     justifyContent: "center",
   };
+
   const [apiSelect, setApiSelect] = useState(null);
+
+  // Custom Upload State
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [fileContent, setFileContent] = useState(null);
+
+  const handleUpload = async (content) => {
+    try {
+      setError(null);
+      setUploading(true);
+      await uploadYAML(content);
+    } catch (error) {
+      setError("Failed to upload YAML file");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <Stack sx={{ backgroundColor: "#121212", minHeight: "100vh", p: 4 }}>
       <Typography sx={{ p: 4 }}>Select a Database type</Typography>
@@ -60,7 +80,18 @@ export default function CreateApiPage() {
               2. Place the modified contents into your own YAML file, select the
               file, and click Create API.
             </Typography>
-            <FileUpload />
+            <FileUpload
+              fileTypes={["yaml", "yml"]}
+              onUpload={handleUpload}
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+              error={error}
+              setError={setError}
+              uploading={uploading}
+              setUploading={setUploading}
+              fileContent={fileContent}
+              setFileContent={setFileContent}
+            />
           </Stack>
         )}
         {apiSelect && <Button variant="contained">Create API </Button>}
