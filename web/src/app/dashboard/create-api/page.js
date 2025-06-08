@@ -57,7 +57,8 @@ export default function CreateApiPage() {
               1. Copy the contents of the YAML file and replace with your
               specific schmea and tables.
               <br />
-              2. Upload the file and click Create API.
+              2. Place the modified contents into your own YAML file, select the
+              file, and click Create API.
             </Typography>
             <FileUpload />
           </Stack>
