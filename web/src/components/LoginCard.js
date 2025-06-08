@@ -21,7 +21,7 @@ export default function LoginCard({
   const [formData, setFormData] = useState({ username: "", password: "" });
 
   const handleChange = (event) => {
-    event.preventDefault(),
+    event.preventDefault();
       setFormData((prev) => ({
         ...prev,
         [event.target.name]: event.target.value,
