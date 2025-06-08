@@ -96,7 +96,7 @@ x-ForeignKeys:
             border:
               apiSelect === 1
                 ? `2px solid ${theme.palette.tertiary.dark}`
-                : "none", // example blue border when selected
+                : "none",
             cursor: "pointer",
           }}
         >
