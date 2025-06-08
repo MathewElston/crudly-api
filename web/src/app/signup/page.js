@@ -15,7 +15,7 @@ export default function CreateAccountPage() {
         alignItems: "center",
       }}
     >
-      <CreateAccountCard handleCreate={onCreate} />;
+      <CreateAccountCard handleCreate={onCreate} />
     </Box>
   );
 }

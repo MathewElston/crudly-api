@@ -46,7 +46,22 @@ export default function CreateApiPage() {
         }}
       >
         {apiSelect === 1 && <p>Generate Premade section</p>}
-        {apiSelect === 2 && <FileUpload></FileUpload>}
+        {apiSelect === 2 && (
+          <Stack spacing={2} sx={{ p: 2 }} align="center">
+            <Typography variant="h4" component={"h1"}>
+              {" "}
+              Upload Custom Schema{" "}
+            </Typography>
+            <Typography variant="body2" align="left">
+              {" "}
+              1. Copy the contents of the YAML file and replace with your
+              specific schmea and tables.
+              <br />
+              2. Upload the file and click Create API.
+            </Typography>
+            <FileUpload />
+          </Stack>
+        )}
         {apiSelect && <Button variant="contained">Create API </Button>}
       </Stack>
     </Stack>

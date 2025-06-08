@@ -1,6 +1,3 @@
-/*
-
-*/
 "use client";
 import { Button, Typography, Stack, colors } from "@mui/material";
 import FileEnforcer from "../lib/enforcer/FileEnforcer";
@@ -48,7 +45,7 @@ export default function FileUpload({
   };
   return (
     <Stack spacing={2} sx={{ width: "fit-content", padding: 2 }}>
-      <Stack spacing={2} direction={"row"}>
+      <Stack spacing={2} direction={"row"} align="center">
         <Button variant="contained" component="label">
           Select File
           <input
@@ -62,15 +59,16 @@ export default function FileUpload({
         {!!selectedFile?.name && (
           <Typography> File Name: {selectedFile.name}</Typography>
         )}
+
+        <Button
+          disabled={!selectedFile || uploading}
+          onClick={() => fileContent && onUpload(fileContent)}
+          variant="contained"
+          color="primary"
+        >
+          {uploading ? "Uploading..." : "Upload"}
+        </Button>
       </Stack>
-      <Button
-        disabled={!selectedFile || uploading}
-        onClick={() => fileContent && onUpload(fileContent)}
-        variant="contained"
-        color="primary"
-      >
-        {uploading ? "Uploading..." : "Upload"}
-      </Button>
       {error && <Typography color={"error"}>{error}</Typography>}
     </Stack>
   );
