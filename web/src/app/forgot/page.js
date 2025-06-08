@@ -3,6 +3,7 @@ import ForgotCard from "@/components/ForgotCard";
 import HoverCard from "@/components/HoverCard";
 import { Stack } from "@mui/material";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPage() {
   const cardConfig = {
@@ -13,6 +14,7 @@ export default function ForgotPage() {
     justifyContent: "center",
   };
 
+  const router = useRouter("/login");
   const [resetSelect, setResetSelect] = useState(null);
   return (
     <Stack spacing={10}>
@@ -21,10 +23,7 @@ export default function ForgotPage() {
           onClick={() => setResetSelect(1)}
           sx={{
             ...cardConfig,
-            border:
-              resetSelect === 1
-                ? `2px solid`
-                : "none",
+            border: resetSelect === 1 ? `2px solid` : "none",
             cursor: "pointer",
           }}
         >
@@ -34,10 +33,7 @@ export default function ForgotPage() {
           onClick={() => setResetSelect(2)}
           sx={{
             ...cardConfig,
-            border:
-              resetSelect === 2
-                ? `2px solid`
-                : "none",
+            border: resetSelect === 2 ? `2px solid` : "none",
             cursor: "pointer",
           }}
         >
@@ -51,7 +47,7 @@ export default function ForgotPage() {
             { name: "email", label: "Email", type: "email", required: true },
           ]}
           buttonLabel={"Email Username"}
-          onSubmit={() => console.log("Submitted")}
+          onSubmit={() => router.push("/login")}
         />
       )}
       {resetSelect === 2 && (
@@ -66,7 +62,7 @@ export default function ForgotPage() {
             },
           ]}
           buttonLabel={"Email Recovery Code"}
-          onSubmit={() => console.log("Submited")}
+          onSubmit={() => router.push("/forgot/code")}
         />
       )}
     </Stack>
