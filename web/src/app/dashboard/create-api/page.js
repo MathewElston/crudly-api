@@ -109,7 +109,7 @@ x-ForeignKeys:
             border:
               apiSelect === 2
                 ? `2px solid ${theme.palette.tertiary.dark}`
-                : "none", // example blue border when selected
+                : "none",
             cursor: "pointer",
           }}
           onClick={() => setApiSelect(2)}
@@ -178,7 +178,10 @@ x-ForeignKeys:
               Upload Custom Schema
             </Typography>
 
-            <Stack spacing={10} direction={"row"}>
+            <Stack
+              spacing={10}
+              direction={"row"}
+            >
               <Typography
                 variant="body2"
                 sx={{ maxWidth: "100%", textAlign: "left" }}
