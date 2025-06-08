@@ -178,10 +178,7 @@ x-ForeignKeys:
               Upload Custom Schema
             </Typography>
 
-            <Stack
-              spacing={10}
-              direction={"row"}
-            >
+            <Stack spacing={10} direction={"row"}>
               <Typography
                 variant="body2"
                 sx={{ maxWidth: "100%", textAlign: "left" }}

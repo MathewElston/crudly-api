@@ -9,15 +9,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Jan", value: 400 },
-  { name: "Feb", value: 300 },
-  { name: "Mar", value: 200 },
-  { name: "Apr", value: 278 },
-  { name: "May", value: 189 },
-];
 
-export default function SimpleLineChart({ strokeColor }) {
+export default function SimpleLineChart({ strokeColor, data }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <LineChart data={data}>
