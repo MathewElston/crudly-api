@@ -14,25 +14,24 @@ export default function LoginCard({
   usernameLabel = "Username",
   passwordLabel = "Password",
   forgotLink = "/forgot",
-  motto = "Build your vision, we'll handle the rest.",
-  title = "Crudly-API",
-  subtitle = "Login to create, manage, and monitor your custom APIs all in one place.",
+  title = "Login",
+  subtitle = "Create, manage, and monitor your custom APIs all in one place.",
 }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
 
   const handleChange = (event) => {
     event.preventDefault();
-      setFormData((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
+    setFormData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault(), onLogin(formData);
   };
   return (
-    <Paper sx={{ width: "30%", overflow: "auto", p: 3 }}>
+    <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 500, mt: 2 }}>
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -40,7 +39,6 @@ export default function LoginCard({
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
           px: 4,
         }}
       >
@@ -48,10 +46,7 @@ export default function LoginCard({
           <Typography variant="h4" component="h1" gutterBottom>
             {title}
           </Typography>
-          <Typography variant="body2" color="tertiary" fontStyle="italic">
-            {motto}
-          </Typography>
-          <Typography variant="body1" color="textSecondary" gutterBottom>
+          <Typography variant="body1" color="tertiary" gutterBottom>
             {subtitle}
           </Typography>
           <TextField

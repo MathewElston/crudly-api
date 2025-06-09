@@ -12,7 +12,6 @@ export default function LoginPage() {
         height: "100vh",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
       }}
     >
       <LoginCard onLogin={onLogin} />

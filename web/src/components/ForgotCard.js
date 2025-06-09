@@ -29,7 +29,9 @@ export default function ForgotCard({ title, fields, onSubmit, buttonLabel }) {
   };
   return (
     <>
-      <Paper sx={{ width: "30%", overflow: "auto", p: 3 }}>
+      <Paper
+        sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 500, mt: 2 }}
+      >
         <Box
           component="form"
           onSubmit={handleSubmit}

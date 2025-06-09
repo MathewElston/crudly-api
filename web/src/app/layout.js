@@ -3,6 +3,7 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "@/lib/styles/theme.js";
+import Navbar from "@/components/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Crudly-API",
+  motto: "Build your vision, we'll handle the rest.",
 };
 
 export default function RootLayout({ children }) {
@@ -25,6 +27,7 @@ export default function RootLayout({ children }) {
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <Navbar title={metadata.title} motto={metadata.motto} />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
