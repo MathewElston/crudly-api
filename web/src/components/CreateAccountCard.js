@@ -20,15 +20,16 @@ export default function CreateAccountCard({
   });
 
   const handleChange = (event) => {
-    event.preventDefault(),
-      setFormData((prev) => ({
-        ...prev,
-        [event.target.name]: event.target.value,
-      }));
+    event.preventDefault();
+    setFormData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(), handleCreate(formData);
+    event.preventDefault();
+    handleCreate(formData);
   };
   return (
     <Paper sx={{ width: "30%", overflow: "auto", p: 3 }}>

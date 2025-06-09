@@ -14,7 +14,7 @@ export default function ForgotPage() {
     justifyContent: "center",
   };
 
-  const router = useRouter("/login");
+  const router = useRouter();
   const [resetSelect, setResetSelect] = useState(null);
   return (
     <Stack spacing={10}>
