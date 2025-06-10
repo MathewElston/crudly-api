@@ -7,7 +7,7 @@ export default function DashboardNavBar() {
         <Link href="/dashboard" color="textPrimary" underline="none">
           Usage
         </Link>
-        <Link href="/dashboard/upload" color="textPrimary" underline="none">
+        <Link href="/dashboard/create-api" color="textPrimary" underline="none">
           Create API
         </Link>
         <Link href="/dashboard/docs" color="textPrimary" underline="none">

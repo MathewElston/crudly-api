@@ -84,7 +84,7 @@ x-ForeignKeys:
   };
 
   return (
-    <Stack sx={{ backgroundColor: "#121212", minHeight: "100vh", p: 4 }}>
+    <Stack sx={{ backgroundColor: "", minHeight: "100vh", p: 4 }}>
       <Typography variant="h2">Create API </Typography>
       <Typography sx={{ p: 4 }}>Select a Database type</Typography>
       <Stack sx={{ width: "50%" }} spacing={4} direction={"row"}>

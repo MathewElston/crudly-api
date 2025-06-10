@@ -41,7 +41,7 @@ const MakoShrinaTheme = {
       contrastText: "#1A1A1A",
     },
     background: {
-      default: "#2E2E2E", // Deep dark gray
+      default: "#121212", // Deep dark gray
       paper: "#1A1A1A", // Almost black for surfaces
     },
     error: {

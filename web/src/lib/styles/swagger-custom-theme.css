@@ -1,15 +1,13 @@
-/* Swagger UI Custom Theme - Clean & Readable */
-
 /* Root container */
 .swagger-ui {
   color: #FFFFFF !important;
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }
 
 /* Main wrapper */
 .swagger-ui .wrapper {
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
 }
 
 /* Scheme container fix */
@@ -26,21 +24,21 @@
 }
 
 .swagger-ui .schemes select {
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
   color: #FFFFFF !important;
   border: 1px solid #444 !important;
 }
 
 /* Modal dialog fix */
 .swagger-ui .modal-dialog-ux {
-  background-color: #1A1A1A !important;
+  background-color: #121212 !important;
   border: 1px solid #444 !important;
   border-radius: 8px !important;
   color: #FFFFFF !important;
 }
 
 .swagger-ui .modal-dialog-ux .modal-dialog-header {
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
   border-bottom: 1px solid #444 !important;
   color: #FFFFFF !important;
 }
@@ -51,7 +49,7 @@
 }
 
 .swagger-ui .modal-dialog-ux .modal-dialog-footer {
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
   border-top: 1px solid #444 !important;
 }
 
@@ -196,7 +194,7 @@
 }
 
 .swagger-ui table thead tr th {
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
   color: #FFFFFF !important;
   border-bottom: 1px solid #00B89A !important;
 }
@@ -336,7 +334,7 @@
 
 /* Loading */
 .swagger-ui .loading-container {
-  background-color: #2E2E2E !important;
+  background-color: #121212 !important;
 }
 
 /* Scrollbars */
