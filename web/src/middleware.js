@@ -11,7 +11,9 @@ export async function middleware(req) {
 
   const currentPath = req.nextUrl.pathname;
 
-  const isProtectedRoute = protectedRoutes.includes(currentPath);
+  const isProtectedRoute = protectedRoutes.some((route) => {
+    currentPath.startsWith(currentPath);
+  });
   const isPublicRoute = publicRoutes.includes(currentPath);
 
   if (isProtectedRoute) {
@@ -21,9 +23,10 @@ export async function middleware(req) {
     if (!session?.userId) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
+    return NextResponse.next();
   }
 }
 
 export const config = {
-  matcher: ["/((?!_next).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };

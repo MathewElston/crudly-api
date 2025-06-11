@@ -40,13 +40,14 @@ export async function createSession(userId) {
 }
 
 export async function verifySession() {
-  const cookie = cookies.get(cookie.name)?.value;
-  const session = await decrypt(cookie);
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session")?.value;
+  const session = await decrypt(sessionCookie);
   if (!session?.userId) {
     redirect("/login");
   }
 
-  return { userId: session.userId };
+  return { isAuth: true, userId: session.userId };
 }
 
 export async function updateSession() {

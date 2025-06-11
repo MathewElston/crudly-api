@@ -10,6 +10,9 @@ export default function DashboardNavBar() {
         <Link href="/dashboard/create-api" color="textPrimary" underline="none">
           Create API
         </Link>
+        <Link href="/dashboard/projects" color="textPrimary" underline="none">
+          Manage Projects
+        </Link>
         <Link href="/dashboard/docs" color="textPrimary" underline="none">
           Documentation
         </Link>
