@@ -3,19 +3,23 @@ import db from "@/lib/database/db";
 import { encryptPassword } from "../password/encryptPassword";
 import { SignupFormSchema } from "@/lib/definitions";
 
-export async function createAccount(formData) {
+export async function createAccount(state, formData) {
+  if (!formData) return { errors: {} };
+
   const validatedField = SignupFormSchema.safeParse({
     username: formData.get("username"),
     email: formData.get("email"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
   });
 
   if (!validatedField.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      errors: validatedField.error.flatten().fieldErrors,
     };
   }
 
+  const { username, email, password } = validatedField.data;
   const connection = await db.getConnection();
 
   try {

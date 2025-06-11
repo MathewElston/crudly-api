@@ -10,34 +10,13 @@ export default function CreateAccountCard({
   subtitle = "Start building your custom APIs in minutes. It's fast, easy, and secure.",
   loginLink = "/login",
 }) {
-  const [success, setSuccess] = useState(null);
+  const [state, action, pending] = useActionState(createAccount, undefined);
 
-  const [state, action, pending] = useActionState();
-
-  const handleChange = (event) => {
-    setFormData((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDafult();
-    const formData = event.currentTarget;
-    const username = formData.get("username");
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const success = await createAccount(username, email, password);
-
-    if (success) {
-      setSuccess(true);
-    }
-  };
   return (
-    <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 700, mt: 2 }}>
+    <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 800, mt: 2 }}>
       <Box
         component="form"
-        action={handleSubmit}
+        action={action}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -59,6 +38,9 @@ export default function CreateAccountCard({
             fullWidth
             required
           />
+          {state?.errors?.username && (
+            <Typography color="error">{state.errors.username}</Typography>
+          )}
           <TextField
             name="email"
             label="Email"
@@ -67,6 +49,9 @@ export default function CreateAccountCard({
             fullWidth
             required
           />
+          {state?.errors?.email && (
+            <Typography color="error">{state.errors.email}</Typography>
+          )}
           <TextField
             name="password"
             label="Password"
@@ -75,6 +60,16 @@ export default function CreateAccountCard({
             fullWidth
             required
           />
+          {state?.errors?.password && (
+            <Box>
+              <Typography color="error">Passwords must:</Typography>
+              {state.errors.password.map((error) => (
+                <Typography color="error" key={error}>
+                  {error}
+                </Typography>
+              ))}
+            </Box>
+          )}
           <TextField
             name="confirmPassword"
             label="Confirm Password"
@@ -83,15 +78,24 @@ export default function CreateAccountCard({
             fullWidth
             required
           />
+          {state?.errors?.confirmPassword && (
+            <Typography color="error">
+              {state.errors.confirmPassword}
+            </Typography>
+          )}
           <Typography variant="body2" align="center" sx={{ mt: 1 }}>
             <Link href={loginLink} underline="hover" color="primary">
               Already have an account? Log in
             </Link>
           </Typography>
-          <Button type="submit" variant="contained" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={pending}
+            fullWidth
+          >
             Create Account
           </Button>
-          {success && <Typography>{success}</Typography>}
         </Stack>
       </Box>
     </Paper>
