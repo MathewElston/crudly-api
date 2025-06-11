@@ -21,7 +21,6 @@ export async function middleware(req) {
     if (!session?.userId) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 }
 
