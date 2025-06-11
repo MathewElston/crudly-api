@@ -1,11 +1,7 @@
-"use client";
 import LoginCard from "@/components/LoginCard.js";
 import { Box } from "@mui/material/";
 
 export default function LoginPage() {
-  const onLogin = (data) => {
-    console.log(data);
-  };
   return (
     <Box
       sx={{
@@ -14,7 +10,7 @@ export default function LoginPage() {
         justifyContent: "center",
       }}
     >
-      <LoginCard onLogin={onLogin} />
+      <LoginCard />
     </Box>
   );
 }

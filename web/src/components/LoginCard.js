@@ -5,9 +5,9 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { TextField, Box, Typography, Link } from "@mui/material";
 import { useState } from "react";
+import { createUserToken } from "@/server/auth/token/createUserToken";
 
 export default function LoginCard({
-  onLogin,
   loading = false,
   error = "",
   disabled = false,
@@ -18,17 +18,19 @@ export default function LoginCard({
   subtitle = "Create, manage, and monitor your custom APIs all in one place.",
 }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [tokenText, setTokenText] = useState(null);
 
   const handleChange = (event) => {
-    event.preventDefault();
     setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault(), onLogin(formData);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const token = await createUserToken(formData);
+    setTokenText(token);
   };
   return (
     <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 500, mt: 2 }}>
@@ -73,6 +75,11 @@ export default function LoginCard({
           {error && (
             <Typography color="error" variant="body2" align="center">
               {error}
+            </Typography>
+          )}
+          {tokenText && (
+            <Typography color="success" variant="body2" align="center">
+              {tokenText}
             </Typography>
           )}
           <Typography variant="body2" align="center" sx={{ mt: 1 }}>

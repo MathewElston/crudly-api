@@ -1,6 +1,6 @@
 "use client";
 import FormCard from "@/components/FormCard";
-import { resetPassword } from "@/server/password/resetPassword";
+import { resetPassword } from "@/server/auth/password/resetPassword";
 import { Button, TextField, Stack, Typography, Box } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

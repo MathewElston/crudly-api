@@ -15,6 +15,7 @@
     "@mui/material": "^7.1.0",
     "@mui/material-nextjs": "^7.1.0",
     "@mui/x-data-grid": "^8.5.1",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -23,7 +24,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.15.3",
-    "swagger-ui-react": "^5.22.0"
+    "swagger-ui-react": "^5.22.0",
+    "zod": "^3.25.58"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

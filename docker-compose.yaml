@@ -30,7 +30,9 @@ services:
   #     context: ./web
   #     dockerfile: Dockerfile
   #   container_name: ${WEB_SERVER_HOST}
-  #   env_file: .env
+  #  env_file:
+  #  - .env
+  #  - ./web/.env
   #   environment:
   #     # for hot reloading next docker container
   #     - CHOKIDAR_USEPOLLING=true

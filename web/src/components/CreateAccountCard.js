@@ -3,39 +3,41 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { TextField, Box, Typography, Link } from "@mui/material";
-import { useState } from "react";
+import { useActionState, useState } from "react";
+import { createAccount } from "@/server/auth/account/createAccount";
 
 export default function CreateAccountCard({
-  handleCreate,
-  motto = "Build your vision, we'll handle the rest.",
-  title = "Crudly-API",
   subtitle = "Start building your custom APIs in minutes. It's fast, easy, and secure.",
   loginLink = "/login",
 }) {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [success, setSuccess] = useState(null);
+
+  const [state, action, pending] = useActionState();
 
   const handleChange = (event) => {
-    event.preventDefault();
     setFormData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    handleCreate(formData);
+  const handleSubmit = async (event) => {
+    event.preventDafult();
+    const formData = event.currentTarget;
+    const username = formData.get("username");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const success = await createAccount(username, email, password);
+
+    if (success) {
+      setSuccess(true);
+    }
   };
   return (
-    <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 500, mt: 2 }}>
+    <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 700, mt: 2 }}>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        action={handleSubmit}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -43,16 +45,10 @@ export default function CreateAccountCard({
         }}
       >
         <Stack spacing={3}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {title}
-          </Typography>
-          <Typography variant="body2" color="tertiary" fontStyle="italic">
-            {motto}
-          </Typography>
-          <Typography variant="h6" component="h2" gutterBottom>
+          <Typography variant="h4" component="h2" gutterBottom>
             Create Account
           </Typography>
-          <Typography variant="body1" color="text.secondary" gutterBottom>
+          <Typography variant="body1" color="teritary" gutterBottom>
             {subtitle}
           </Typography>
           <TextField
@@ -62,8 +58,6 @@ export default function CreateAccountCard({
             variant="outlined"
             fullWidth
             required
-            onChange={handleChange}
-            value={formData.username}
           />
           <TextField
             name="email"
@@ -72,8 +66,6 @@ export default function CreateAccountCard({
             variant="outlined"
             fullWidth
             required
-            onChange={handleChange}
-            value={formData.email}
           />
           <TextField
             name="password"
@@ -82,8 +74,6 @@ export default function CreateAccountCard({
             variant="outlined"
             fullWidth
             required
-            onChange={handleChange}
-            value={formData.password}
           />
           <TextField
             name="confirmPassword"
@@ -92,8 +82,6 @@ export default function CreateAccountCard({
             variant="outlined"
             fullWidth
             required
-            onChange={handleChange}
-            value={formData.confirmPassword}
           />
           <Typography variant="body2" align="center" sx={{ mt: 1 }}>
             <Link href={loginLink} underline="hover" color="primary">
@@ -103,6 +91,7 @@ export default function CreateAccountCard({
           <Button type="submit" variant="contained" fullWidth>
             Create Account
           </Button>
+          {success && <Typography>{success}</Typography>}
         </Stack>
       </Box>
     </Paper>
