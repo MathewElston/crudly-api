@@ -4,8 +4,9 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { TextField, Box, Typography, Link } from "@mui/material";
-import { useState } from "react";
-import { createUserToken } from "@/server/auth/token/createUserToken";
+import { login } from "@/server/auth/actions/login";
+import { useActionState } from "react";
+import { errors } from "jose";
 
 export default function LoginCard({
   loading = false,
@@ -17,26 +18,26 @@ export default function LoginCard({
   title = "Login",
   subtitle = "Create, manage, and monitor your custom APIs all in one place.",
 }) {
-  const [formData, setFormData] = useState({ username: "", password: "" });
-  const [tokenText, setTokenText] = useState(null);
+  const [state, action, pending] = useActionState(login, undefined);
 
-  const handleChange = (event) => {
-    setFormData((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  // const handleChange = (event) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [event.target.name]: event.target.value,
+  //   }));
+  // };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const token = await createUserToken(formData);
-    setTokenText(token);
-  };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const token = await createUserToken(formData);
+  //   setTokenText(token);
+  // };
+
   return (
     <Paper sx={{ width: "30%", overflow: "auto", p: 3, maxHeight: 500, mt: 2 }}>
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        action={action}
         sx={{
           height: "100%",
           display: "flex",
@@ -57,10 +58,7 @@ export default function LoginCard({
             type="text"
             variant="outlined"
             fullWidth
-            disabled={disabled}
-            autoComplete="username"
-            onChange={handleChange}
-            value={formData.username}
+            disabled={pending}
           />
           <TextField
             name="password"
@@ -68,19 +66,21 @@ export default function LoginCard({
             type="password"
             variant="outlined"
             fullWidth
-            disabled={disabled}
-            onChange={handleChange}
-            value={formData.password}
+            disabled={pending}
           />
-          {error && (
-            <Typography color="error" variant="body2" align="center">
-              {error}
-            </Typography>
-          )}
-          {tokenText && (
-            <Typography color="success" variant="body2" align="center">
-              {tokenText}
-            </Typography>
+          {state?.errors && (
+            <Stack spacing={1}>
+              {Object.entries(state.errors).map(([key, message]) => (
+                <Typography
+                  key={key}
+                  color="error"
+                  variant="body2"
+                  align="center"
+                >
+                  {message}
+                </Typography>
+              ))}
+            </Stack>
           )}
           <Typography variant="body2" align="center" sx={{ mt: 1 }}>
             <Link href={forgotLink} underline="hover" color="primary">
@@ -91,9 +91,10 @@ export default function LoginCard({
             type="submit"
             variant="contained"
             fullWidth
-            disabled={disabled || loading}
+            disabled={pending}
           >
-            {loading ? "Logging in..." : "Login"}
+            {" "}
+            Login
           </Button>
         </Stack>
       </Box>

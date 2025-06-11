@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+"use server";
 import { deleteSession } from "../token/session";
 import { redirect } from "next/navigation";
 
