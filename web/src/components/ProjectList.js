@@ -1,6 +1,6 @@
 "use client";
-import { Paper,Link } from "@mui/material";
-import { DataGrid  } from "@mui/x-data-grid";
+import { Paper, Link } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function ProjectList({ projectData, ...props }) {
   const fullColumns = projectData.columns.map((col) => {
