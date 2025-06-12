@@ -26,6 +26,7 @@ const projectData = {
 
 export default async function ProjectPage({ params }) {
   const { slug } = params;
+  const decodedSlug = decodeURIComponent(slug);
   const titleSlug = slug.charAt(0).toUpperCase() + slug.slice(1);
   const tableList = ["Orders", "Users"];
   return (
