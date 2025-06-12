@@ -9,7 +9,7 @@ export default function SecretText({ secretText, label }) {
   return (
     <TextField
       label={label}
-      value={showKey ? secretText : "********"}
+      value={showKey ? secretText ?? "" : "********"}
       type={showKey ? "text" : "password"}
       InputProps={{
         readOnly: true,

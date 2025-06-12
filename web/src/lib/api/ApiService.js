@@ -1,4 +1,5 @@
 import crypto from "crypto";
+
 class ApiService {
   constructor(db) {
     this.db = db;
@@ -20,10 +21,43 @@ class ApiService {
       [userId, apiKey, 1, 0, 0]
     );
     return {
-        id: results.insertId,
-        apiKey: apiKey,
-        userId
+      id: results.insertId,
+      apiKey: apiKey,
+      userId,
+    };
+  }
+
+  async resetApiKey(userId) {
+    const apiKey = crypto.randomBytes(32).toString("hex");
+
+    const [results] = await this.db.execute(
+      ` UPDATE User_API_Key
+        SET api_key = ?
+        WHERE user_id = ?
+      `,
+      [apiKey, userId]
+    );
+    return {
+      success: results.affectedRows > 0,
+      apiKey,
+    };
+  }
+
+  async getApiKey(userId) {
+    const [results] = await this.db.execute(
+      ` SELECT api_key
+        FROM User_API_Key
+        WHERE user_id = ?
+      `,
+      [userId]
+    );
+
+    if (results.length === 0) {
+      return { apiKey: null };
     }
+    const apiKey = results[0].api_key;
+
+    return { apiKey: apiKey };
   }
 }
 

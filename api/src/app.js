@@ -1,13 +1,12 @@
 import express from "express";
 
-import db from "./lib/database/db.js";
-
 import RecordService from "./lib/services/RecordService.js";
-
+import db from "./lib/database/db.js";
 import stripProperty from "./lib/utilities/stripProperty.js";
+import { apiKeyAuth } from "./lib/middleware/apiKeyAuth.js";
 
 const testUser = {
-  userId: 1,
+  userId: 11,
   projectId: 2,
   projectName: "Ordering",
 };
@@ -21,14 +20,17 @@ const responseSchema = {
 const recordService = new RecordService(db);
 
 const app = express();
+
 app.use(express.json());
+
+app.use(apiKeyAuth);
 
 app.get("/projects/:project", async (req, res) => {
   const { project } = req.params;
 
   try {
     const results = await recordService.getAllProjectRecords(
-      testUser.userId,
+      req.userId,
       project
     );
 
@@ -60,7 +62,7 @@ app.get("/projects/:project/tables/:table", async (req, res) => {
 
   try {
     const results = await recordService.getTableRecords(
-      testUser.userId,
+      req.userId,
       project,
       table
     );
@@ -94,7 +96,7 @@ app.get("/projects/:project/tables/:table/:id", async (req, res) => {
 
   try {
     const result = await recordService.getRecord(
-      testUser.userId,
+      req.userId,
       project,
       table,
       recordId
@@ -130,7 +132,7 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
   try {
     // Add check if multiple data points and then route to add 1 record or multiple
     const { updatedData, results, valid, errors } =
-      await recordService.createRecord(testUser.userId, project, table, data);
+      await recordService.createRecord(req.userId, project, table, data);
     if (valid) {
       if (results && results.affectedRows > 0) {
         return res.status(201).json({
@@ -171,7 +173,7 @@ app.put("/projects/:project/tables/:table/:id", async (req, res) => {
   try {
     const { updateRecord, valid, errors, results } =
       await recordService.updateRecord(
-        testUser.userId,
+        req.userId,
         project,
         table,
         recordId,
@@ -212,7 +214,7 @@ app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
   try {
     const { updateRecord, valid, errors, results } =
       await recordService.partialUpdateRecord(
-        testUser.userId,
+        req.userId,
         project,
         table,
         recordId,
@@ -251,7 +253,7 @@ app.delete("/projects/:project/tables/:table/:id", async (req, res) => {
 
   try {
     const isDeleted = await recordService.deleteRecord(
-      testUser.userId,
+      req.userId,
       project,
       table,
       recordId
@@ -282,7 +284,7 @@ app.delete("/projects/:project/tables/:table/:id", async (req, res) => {
 // Testing Grounds
 app.get("/", async (req, res) => {
   const schema = await recordService.getProjectSchema(
-    testUser.userId,
+    req.userId,
     testUser.projectName
   );
 
