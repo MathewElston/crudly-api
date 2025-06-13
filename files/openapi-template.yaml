@@ -5,16 +5,32 @@ info:
   description: "A custom API powered by Crudly-API infrastructure."
 
 servers:
-  - url: https://crudly-api.com/api/v1
+  - url: https://crudlyapi.dev/api/v1
     description: API Server
 
 paths:
-  /{project}/{table}:
+  /projects/{project}:
+    parameters:
+      - $ref: "#/components/parameters/Project"
+    get:
+      description: Get all data from a project.
+      parameters:
+        - $ref: "#/components/parameters/SortBy"
+        - $ref: "#/components/parameters/Order"
+      responses:
+        200:
+          $ref: "#/components/responses/SuccessfulGet"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalError"
+
+  /projects/{project}/tables/{table}:
     parameters:
       - $ref: "#/components/parameters/Project"
       - $ref: "#/components/parameters/Table"
     get:
-      description: Get all data from table
+      description: Get all data from a table.
       parameters:
         - $ref: "#/components/parameters/SortBy"
         - $ref: "#/components/parameters/Order"
@@ -41,14 +57,14 @@ paths:
         500:
           $ref: "#/components/responses/InternalError"
 
-  /{project}/{table}/{id}:
+  /projects/{project}/tables/{table}/{id}:
     parameters:
       - $ref: "#/components/parameters/Project"
       - $ref: "#/components/parameters/Table"
       - $ref: "#/components/parameters/Id"
 
     get:
-      description: Get a single record by ID
+      description: Get a single record by id.
       responses:
         200:
           $ref: "#/components/responses/SuccessfulGetSingle"
@@ -111,7 +127,7 @@ components:
           example: 4
         prop2:
           type: string
-          example: Hello world
+          example: Hello world!
         prop3:
           type: number
           example: 3.14
@@ -128,12 +144,12 @@ components:
           example: 400
         message:
           type: string
-          description: Human-readable error message
+          description: Human-readable error message.
           example: The request body is missing required field 'name'
 
   requestBodies:
     PostRequest:
-      description: Create a new resource
+      description: Create a new resource.
       required: true
       content:
         application/json:
@@ -141,6 +157,9 @@ components:
             oneOf:
               # List All Refs
               - $ref: "#/components/schemas/TableRecord"
+              - type: array
+                items:
+                  $ref: "#/components/schemas/TableRecord"
 
     PutRequest:
       description: Update a complete resource
@@ -210,7 +229,7 @@ components:
 
   responses:
     SuccessfulGet:
-      description: A successful response of table records
+      description: A successful response of table records.
       content:
         application/json:
           schema:
@@ -221,7 +240,7 @@ components:
                 - $ref: "#/components/schemas/TableRecord"
 
     SuccessfulGetSingle:
-      description: A successful response of a single record
+      description: A successful response of a single record.
       content:
         application/json:
           schema:
@@ -237,10 +256,10 @@ components:
               # List all tables
               - $ref: "#/components/schemas/TableRecord"
     SuccessfulPut:
-      description: A resource updated successfully
+      description: A resource updated successfully.
 
     SuccessfulPatch:
-      description: A resource partially updated successfully
+      description: A resource partially updated successfully.
       content:
         application/json:
           schema:
@@ -252,14 +271,14 @@ components:
       description: Resource deleted successfully.
 
     BadRequest:
-      description: Bad request - invalid input or missing required fields
+      description: Bad request - invalid input or missing required fields.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
 
     NotFound:
-      description: Resource not found
+      description: Resource not found.
       content:
         application/json:
           schema:

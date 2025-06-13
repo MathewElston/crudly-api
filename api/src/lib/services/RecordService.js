@@ -111,9 +111,73 @@ class RecordService {
   }
 
   async createRecords(userId, projectName, tableName, dataList) {
-    // Validate all the records add schemas before creating all records
-    for (const data of dataList) {
-      await this.createRecord(userId, projectName, tableName, data);
+    console.log("First item type:", typeof dataList[0]);
+    console.log("First item:", dataList[0]);
+    const connection = await this.db.getConnection();
+    try {
+      const projectSchema = await this.getProjectSchema(userId, projectName);
+      const tableSchema = projectSchema[tableName];
+
+      if (!tableSchema) {
+        throw new Error(`No schema for table ${tableName}`);
+      }
+
+      const cleanedSchema = stripProperty(tableSchema, "example");
+      this.schemaEnforcer.clearSchema();
+      this.schemaEnforcer.registerSchema(tableName, cleanedSchema);
+
+      await connection.beginTransaction();
+
+      const updatedData = [];
+      let affectedRows = 0;
+
+      for (const data of dataList) {
+        const validationObject = this.schemaEnforcer.enforce(tableName, data);
+
+        if (!validationObject.valid) {
+          await connection.rollback();
+          return {
+            valid: false,
+            errors: validationObject.errors || [
+              `Invalid data: ${JSON.stringify(data)}`,
+            ],
+            results: null,
+            updatedData: null,
+          };
+        }
+
+        const [results] = await connection.execute(
+          `UPDATE User_Projects
+         SET records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
+         WHERE user_id = ? AND project_name = ?`,
+          [JSON.stringify(data), userId, projectName]
+        );
+
+        if (results.affectedRows > 0) {
+          updatedData.push(data);
+          affectedRows += results.affectedRows;
+        }
+      }
+
+      await connection.commit();
+
+      return {
+        valid: true,
+        errors: null,
+        results: { affectedRows },
+        updatedData,
+      };
+    } catch (error) {
+      if (connection) await connection.rollback();
+      console.error("Transaction failed:", error.message);
+      return {
+        valid: false,
+        errors: [error.message],
+        results: null,
+        updatedData: null,
+      };
+    } finally {
+      if (connection) await connection.release();
     }
   }
 

@@ -7,8 +7,8 @@ import ApiManager from "@/components/ApiManager";
 
 export default async function UsagePage() {
   try {
-    const user = await getUser();
-    const { apiKey } = await getApiKey(user.id);
+    const {id, username} = await getUser();
+    const { apiKey } = await getApiKey(id);
 
     const data = [
       { name: "Jan", value: 400 },
@@ -20,8 +20,8 @@ export default async function UsagePage() {
     return (
       <Stack spacing={2} padding={2} alignItems={"center"}>
         <Stack direction={"row"} spacing={10}>
-          <Typography variant="h1">Hi, {user.username}</Typography>
-          <ApiManager userId={user.id} userKey={apiKey} />
+          <Typography variant="h1">Hi, {username}</Typography>
+          <ApiManager userId={id} userKey={apiKey} />
         </Stack>
         <UsageGraph data={data} currentProgress={40} maxProgress={1000} />
       </Stack>
