@@ -127,7 +127,7 @@ app.get("/projects/:project/tables/:table/:id", async (req, res) => {
 
 app.post("/projects/:project/tables/:table", async (req, res) => {
   const { project, table } = req.params;
-  const { data } = req.body;
+  const data = req.body;
 
   try {
     let result;
@@ -183,7 +183,7 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
 
 app.put("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
-  const { data } = req.body;
+  const data = req.body;
   const recordId = Number(id);
 
   try {
@@ -224,7 +224,7 @@ app.put("/projects/:project/tables/:table/:id", async (req, res) => {
 
 app.patch("/projects/:project/tables/:table/:id", async (req, res) => {
   const { project, table, id } = req.params;
-  const { data } = req.body;
+  const data = req.body;
   const recordId = Number(id);
 
   try {

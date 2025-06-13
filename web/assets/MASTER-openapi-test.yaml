@@ -178,6 +178,28 @@ components:
                   oneOf:
                     - $ref: "#/components/schemas/Users"
                     - $ref: "#/components/schemas/Orders"
+          examples:
+            SingleOrder:
+              summary: A single order object
+              value:
+                id: 1
+                userId: 2
+                item: "Banana"
+                quantity: 5
+                price: 1.25
+            MultipleOrders:
+              summary: Multiple orders in an array
+              value:
+                - id: 1
+                  userId: 2
+                  item: "Banana"
+                  quantity: 5
+                  price: 1.25
+                - id: 2
+                  userId: 2
+                  item: "Apple"
+                  quantity: 3
+                  price: 0.99
 
     PutRequest:
       description: Update a complete resource
@@ -194,7 +216,28 @@ components:
                   oneOf:
                     - $ref: "#/components/schemas/Users"
                     - $ref: "#/components/schemas/Orders"
-
+          examples:
+            SingleOrder:
+              summary: Replace a single order
+              value:
+                id: 3
+                userId: 1
+                item: "Peach"
+                quantity: 6
+                price: 1.75
+            MultipleOrders:
+              summary: Replace multiple orders
+              value:
+                - id: 3
+                  userId: 1
+                  item: "Peach"
+                  quantity: 6
+                  price: 1.75
+                - id: 4
+                  userId: 1
+                  item: "Grapes"
+                  quantity: 2
+                  price: 2.50
     PatchRequest:
       description: Partially update a resource
       required: true
@@ -206,6 +249,15 @@ components:
               - $ref: "#/components/schemas/Orders"
               - $ref: "#/components/schemas/Users"
               - type: object
+          examples:
+            UpdateQuantity:
+              summary: Update only the quantity of an order
+              value:
+                quantity: 10
+            UpdateEmail:
+              summary: Update only the user's email
+              value:
+                email: "newemail@example.com"
 
   parameters:
     Project:

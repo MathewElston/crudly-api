@@ -139,11 +139,27 @@ components:
         application/json:
           schema:
             oneOf:
-              # List All Refs
               - $ref: "#/components/schemas/TableRecord"
               - type: array
-                item:
-                  $ref: "#/components/schemas/TableRecord"
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/TableRecord"
+          examples:
+            SingleRecord:
+              summary: A single record
+              value:
+                id: 1
+                prop2: "Hello world"
+                prop3: 3.14
+            MultipleRecords:
+              summary: Multiple records
+              value:
+                - id: 1
+                  prop2: "Hello world"
+                  prop3: 3.14
+                - id: 2
+                  prop2: "Another value"
+                  prop3: 2.71
 
     PutRequest:
       description: Update a complete resource
@@ -152,8 +168,11 @@ components:
         application/json:
           schema:
             oneOf:
-              #List All Refs
               - $ref: "#/components/schemas/TableRecord"
+          example:
+            id: 1
+            prop2: "Updated value"
+            prop3: 4.20
 
     PatchRequest:
       description: Partially update a resource
@@ -162,9 +181,10 @@ components:
         application/json:
           schema:
             oneOf:
-              #List All Refs
               - $ref: "#/components/schemas/TableRecord"
               - type: object
+          example:
+            prop2: "Patched field only"
 
   parameters:
     Project:
