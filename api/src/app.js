@@ -139,8 +139,14 @@ app.post("/projects/:project/tables/:table", async (req, res) => {
         table,
         data
       );
+    } else {
+      result = await recordService.createRecord(
+        req.userId,
+        project,
+        table,
+        data
+      );
     }
-    result = await recordService.createRecord(req.userId, project, table, data);
 
     const { updatedData, results, valid, errors } = result;
     if (valid) {

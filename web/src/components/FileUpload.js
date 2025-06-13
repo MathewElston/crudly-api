@@ -1,24 +1,23 @@
 "use client";
-import { Button, Typography, Stack, colors } from "@mui/material";
+import { Button, Typography, Stack } from "@mui/material";
 import FileEnforcer from "../lib/enforcer/FileEnforcer";
+import { useState } from "react";
+import { uploadYAML } from "@/server/uploadYAML";
 
-export default function FileUpload({
-  fileTypes = [],
-  onUpload,
-  selectedFile,
-  setSelectedFile,
-  error,
-  setError,
-  uploading,
-  setUploading,
-  fileContent,
-  setFileContent,
-}) {
+export default function FileUpload({ projectId }) {
+  const fileTypes = ["yaml", "yml"];
+
   const fileEnforcer = new FileEnforcer({
     allowedContentTypes: ["application/yaml"],
     allowedExtensionTypes: fileTypes,
     maxFileSize: 255 * 1024 * 1024,
   });
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [fileContent, setFileContent] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const combinedArray = fileTypes.join(",");
 
@@ -43,6 +42,20 @@ export default function FileUpload({
       setUploading(false);
     }
   };
+
+  const handleUpload = async () => {
+    try {
+      setError(null);
+      setUploading(true);
+      await uploadYAML(fileContent, projectId);
+      setSuccess("Upload Succesful!");
+    } catch (error) {
+      setError(`Failed to upload YAML file: ${error.message}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <Stack spacing={2} sx={{ width: "fit-content", padding: 2 }}>
       <Stack spacing={2} direction={"row"} align="center">
@@ -62,12 +75,13 @@ export default function FileUpload({
 
         <Button
           disabled={!selectedFile || uploading}
-          onClick={() => fileContent && onUpload(fileContent)}
+          onClick={() => fileContent && handleUpload()}
           variant="contained"
           color="primary"
         >
           {uploading ? "Uploading..." : "Upload"}
         </Button>
+        {success && <Typography color="success">{success}</Typography>}
       </Stack>
       {error && <Typography color={"error"}>{error}</Typography>}
     </Stack>

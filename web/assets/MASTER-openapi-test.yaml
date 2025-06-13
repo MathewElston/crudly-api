@@ -41,7 +41,7 @@ paths:
         500:
           $ref: "#/components/responses/InternalError"
 
-  /projects{project}/tables/{table}/{id}:
+  /projects/{project}/tables/{table}/{id}:
     parameters:
       - $ref: "#/components/parameters/Project"
       - $ref: "#/components/parameters/Table"
@@ -173,6 +173,11 @@ components:
               # List All Refs
               - $ref: "#/components/schemas/Users"
               - $ref: "#/components/schemas/Orders"
+              - type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/Users"
+                    - $ref: "#/components/schemas/Orders"
 
     PutRequest:
       description: Update a complete resource
@@ -184,10 +189,11 @@ components:
               #List All Refs
               - $ref: "#/components/schemas/Users"
               - $ref: "#/components/schemas/Orders"
-              - type:array:
+              - type: array
                 items:
-                  $ref: "#/components/schemas/Users"
-                  $ref: "#/components/schemas/Orders"
+                  oneOf:
+                    - $ref: "#/components/schemas/Users"
+                    - $ref: "#/components/schemas/Orders"
 
     PatchRequest:
       description: Partially update a resource

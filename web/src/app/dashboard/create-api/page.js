@@ -202,18 +202,7 @@ x-ForeignKeys:
                 <ScrollText text={schemaTextTest} />
               </Box>
             </Stack>
-            <FileUpload
-              fileTypes={["yaml", "yml"]}
-              onUpload={handleUpload}
-              selectedFile={selectedFile}
-              setSelectedFile={setSelectedFile}
-              error={error}
-              setError={setError}
-              uploading={uploading}
-              setUploading={setUploading}
-              fileContent={fileContent}
-              setFileContent={setFileContent}
-            />
+            <FileUpload projectId={1} />
           </Stack>
         )}
 
