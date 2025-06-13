@@ -9,7 +9,7 @@ servers:
     description: API Server
 
 paths:
-  /projects/{project}/tablse/{table}:
+  /projects/{project}/tables/{table}:
     parameters:
       - $ref: "#/components/parameters/Project"
       - $ref: "#/components/parameters/Table"
@@ -141,6 +141,9 @@ components:
             oneOf:
               # List All Refs
               - $ref: "#/components/schemas/TableRecord"
+              - type: array
+                item:
+                  $ref: "#/components/schemas/TableRecord"
 
     PutRequest:
       description: Update a complete resource

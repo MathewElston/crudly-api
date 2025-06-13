@@ -184,6 +184,10 @@ components:
               #List All Refs
               - $ref: "#/components/schemas/Users"
               - $ref: "#/components/schemas/Orders"
+              - type:array:
+                items:
+                  $ref: "#/components/schemas/Users"
+                  $ref: "#/components/schemas/Orders"
 
     PatchRequest:
       description: Partially update a resource
