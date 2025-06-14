@@ -5,9 +5,9 @@ class ApiService {
     this.db = db;
   }
 
-  async createApiKey(userId) {
+  async createApiKey(userId, conn = this.db) {
     const apiKey = crypto.randomBytes(32).toString("hex");
-    const [results] = await this.db.execute(
+    const [results] = await conn.execute(
       `INSERT INTO User_API_Key (
         user_id,
         api_key,

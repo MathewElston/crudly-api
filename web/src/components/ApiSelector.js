@@ -3,12 +3,10 @@ import FileUpload from "@/components/FileUpload";
 import HoverCard from "@/components/HoverCard";
 import ScrollText from "@/components/ScrollText";
 import theme from "@/lib/styles/theme";
-import { getUser } from "@/server/data-access-layer/getUser";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import { useState } from "react";
 
-export default function CreateApiPage() {
-  const { id } = getUser();
+export default function ApiSelector() {
   const cardConfig = {
     width: "50%",
     height: 250,

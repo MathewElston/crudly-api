@@ -2,6 +2,7 @@
 import db from "@/lib/database/db";
 import { encryptPassword } from "../password/encryptPassword";
 import { SignupFormSchema } from "@/lib/definitions";
+import { createApiKey } from "@/server/api/apiServerActions";
 
 export async function createAccount(state, formData) {
   if (!formData) return { errors: {} };
@@ -36,6 +37,8 @@ export async function createAccount(state, formData) {
       `INSERT INTO Users_Credentials (user_id, password_hash) VALUES (?, ?)`,
       [userId, encryptedPassword]
     );
+
+    await createApiKey(userId, connection);
 
     await connection.commit();
     return true;

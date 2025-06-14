@@ -4,8 +4,8 @@ import db from "@/lib/database/db";
 
 const apiService = new ApiService(db);
 
-export async function createApiKey(userId) {
-  return await apiService.createApiKey(userId);
+export async function createApiKey(userId, connection = undefined) {
+  return await apiService.createApiKey(userId, connection);
 }
 
 export async function resetApiKey(userId) {
