@@ -6,7 +6,7 @@ import theme from "@/lib/styles/theme";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import { useState } from "react";
 
-export default function ApiSelector() {
+export default function ApiSelector(userId) {
   const cardConfig = {
     width: "50%",
     height: 250,

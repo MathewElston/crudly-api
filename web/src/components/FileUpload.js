@@ -2,7 +2,7 @@
 import { Button, Typography, Stack } from "@mui/material";
 import FileEnforcer from "../lib/enforcer/FileEnforcer";
 import { useState } from "react";
-import { uploadYAML } from "@/server/uploadYAML";
+import { parseYAML } from "@/lib/project/parseYAML";
 
 export default function FileUpload({ projectId }) {
   const fileTypes = ["yaml", "yml"];
@@ -47,7 +47,7 @@ export default function FileUpload({ projectId }) {
     try {
       setError(null);
       setUploading(true);
-      await uploadYAML(fileContent, projectId);
+      await parseYAML(fileContent, projectId);
       setSuccess("Upload Succesful!");
     } catch (error) {
       setError(`Failed to upload YAML file: ${error.message}`);
