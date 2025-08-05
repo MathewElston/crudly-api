@@ -96,12 +96,24 @@ class RecordService {
       return validationObject;
     }
 
+    // const [results] = await this.db.execute(
+    //   `UPDATE User_Projects
+    //     set records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
+    //     WHERE user_id = ? AND project_name = ?
+    //     `,
+    //   [JSON.stringify(data), userId, projectName]
+    // );
+
+    const path = `$.${tableName}`;
     const [results] = await this.db.execute(
       `UPDATE User_Projects
-        set records = JSON_ARRAY_APPEND(records, '$.${tableName}', CAST (? AS JSON))
-        WHERE user_id = ? AND project_name = ?
-        `,
-      [JSON.stringify(data), userId, projectName]
+   SET records = JSON_ARRAY_APPEND(
+     COALESCE(records, JSON_OBJECT()),
+     ?, 
+     CAST(? AS JSON)
+   )
+   WHERE user_id = ? AND project_name = ?`,
+      [path, JSON.stringify(data), userId, projectName]
     );
 
     validationObject.results = results;

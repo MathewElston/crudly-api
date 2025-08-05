@@ -2,9 +2,8 @@ import ApiSelector from "@/components/ApiSelector";
 
 import { getUser } from "@/server/data-access-layer/getUser";
 
+export default async function CreateApiPage() {
+  const { id } = await getUser();
 
-export default function CreateApiPage() {
-  const { id } = getUser();
-
-  return <ApiSelector />;
+  return <ApiSelector userId={id} />;
 }

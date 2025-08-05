@@ -4,7 +4,7 @@ import FileEnforcer from "../lib/enforcer/FileEnforcer";
 import { useState } from "react";
 import { parseYAML } from "@/lib/project/parseYAML";
 
-export default function FileUpload({ projectId }) {
+export default function FileUpload({onSchemaUpload}) {
   const fileTypes = ["yaml", "yml"];
 
   const fileEnforcer = new FileEnforcer({
@@ -43,18 +43,24 @@ export default function FileUpload({ projectId }) {
     }
   };
 
-  const handleUpload = async () => {
-    try {
-      setError(null);
-      setUploading(true);
-      await parseYAML(fileContent, projectId);
-      setSuccess("Upload Succesful!");
-    } catch (error) {
-      setError(`Failed to upload YAML file: ${error.message}`);
-    } finally {
-      setUploading(false);
-    }
-  };
+const handleUpload = async () => {
+  try {
+    setError(null);
+    setUploading(true);
+    const result = await parseYAML(fileContent);
+
+    if (!result.success) throw new Error(result.error);
+
+    onSchemaUpload?.(result.parsedSchema); // ✅ pass only parsedSchema
+    setSuccess("Upload Successful!");
+  } catch (error) {
+    setError(`Failed to upload YAML file: ${error.message}`);
+  } finally {
+    setUploading(false);
+  }
+};
+
+
 
   return (
     <Stack spacing={2} sx={{ width: "fit-content", padding: 2 }}>

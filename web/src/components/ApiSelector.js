@@ -3,10 +3,11 @@ import FileUpload from "@/components/FileUpload";
 import HoverCard from "@/components/HoverCard";
 import ScrollText from "@/components/ScrollText";
 import theme from "@/lib/styles/theme";
+import { addProject } from "@/server/project/addProject";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import { useState } from "react";
 
-export default function ApiSelector(userId) {
+export default function ApiSelector({ userId }) {
   const cardConfig = {
     width: "50%",
     height: 250,
@@ -70,6 +71,7 @@ x-ForeignKeys:
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [fileContent, setFileContent] = useState(null);
+  const [uploadSchema, setUploadSchema] = useState(null);
 
   const handleUpload = async (content) => {
     try {
@@ -82,6 +84,31 @@ x-ForeignKeys:
       setUploading(false);
     }
   };
+
+  const handleSchemaUpload = (schema) => {
+    setUploadSchema(schema); //
+    console.log("Received Schema:", schema); // optional
+  };
+
+  async function handleCreateApi() {
+    if (!userId) {
+      alert("User not logged in");
+      return;
+    }
+    if (!uploadSchema) {
+      alert("No schema uploaded");
+      return;
+    }
+    const projectName = prompt("Enter a project name:");
+    if (!projectName) return;
+
+    const result = await addProject(userId, uploadSchema, projectName);
+    if (result.success) {
+      alert(`Project created with ID: ${result.projectId}`);
+    } else {
+      alert(`Failed to create project: ${result.error}`);
+    }
+  }
 
   return (
     <Stack sx={{ backgroundColor: "", minHeight: "100vh", p: 4 }}>
@@ -202,11 +229,15 @@ x-ForeignKeys:
                 <ScrollText text={schemaTextTest} />
               </Box>
             </Stack>
-            <FileUpload projectId={1} />
+            <FileUpload onSchemaUpload={handleSchemaUpload} />
           </Stack>
         )}
 
-        {apiSelect && <Button variant="contained">Create API </Button>}
+        {apiSelect && (
+          <Button onClick={handleCreateApi} variant="contained">
+            Create API{" "}
+          </Button>
+        )}
       </Stack>
     </Stack>
   );
