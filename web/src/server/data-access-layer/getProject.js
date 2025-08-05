@@ -11,13 +11,15 @@ export async function getProject() {
 
   try {
     const [results] = await db.execute(
-      ` SELECT project_name,
+      ` SELECT id, project_name
         FROM User_Projects
         WHERE id = ? `,
       [session.userId]
     );
 
     const project = results[0];
+
+    console.log(project);
 
     return project;
   } catch (error) {

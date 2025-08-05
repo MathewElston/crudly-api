@@ -6,10 +6,11 @@ import { redirect } from "next/navigation";
 const secretKey = process.env.ACCESS_TOKEN_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
+const sixtyDays = 24 * 60 * 60 * 1000;
 const cookie = {
   name: "session",
   options: { httpOnly: true, secure: true, sameSite: "lax", path: "/" },
-  duration: 24 * 60 * 60 * 1000,
+  duration: sixtyDays,
 };
 export async function encrypt(payload) {
   return new SignJWT(payload)
@@ -43,6 +44,7 @@ export async function verifySession() {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("session")?.value;
   const session = await decrypt(sessionCookie);
+
   if (!session?.userId) {
     redirect("/login");
   }
