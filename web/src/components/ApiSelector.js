@@ -235,7 +235,7 @@ x-ForeignKeys:
 
         {apiSelect && (
           <Button onClick={handleCreateApi} variant="contained">
-            Create API{" "}
+            Create API
           </Button>
         )}
       </Stack>

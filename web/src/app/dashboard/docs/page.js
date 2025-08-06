@@ -1,15 +1,14 @@
 import ApiDoc from "@/components/ApiDoc";
 import { getApiSpec } from "@/server/api/getApiSpec";
-import { getProject } from "@/server/data-access-layer/getProject";
+import { getProjects } from "@/server/data-access-layer/getProject";
 import { getUser } from "@/server/data-access-layer/getUser";
 
 export default async function ApiDocsPage() {
-  const { id } = await getUser();
-  console.log(id);
-  const { projectId, projectName } = (await getProject()) ?? {};
-  console.log(projectId, projectName);
+  const { id } = (await getUser()) ?? {};
+  const projects = (await getProjects()) ?? {};
 
-  // this is hard coded for for the user id = 12 and the project name 123.
+  // need to create a selector component to select the choices of projects and then display
+  // the API spec depending on the project name
   const spec = await getApiSpec(id, "123");
   return <ApiDoc spec={spec} />;
 }

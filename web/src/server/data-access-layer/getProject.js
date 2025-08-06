@@ -2,7 +2,7 @@ import "server-only";
 import { verifySession } from "../auth/token/session";
 import db from "@/lib/database/db";
 
-export async function getProject() {
+export async function getProjects() {
   const session = await verifySession();
 
   if (!session) {
@@ -13,11 +13,11 @@ export async function getProject() {
     const [results] = await db.execute(
       ` SELECT id, project_name
         FROM User_Projects
-        WHERE id = ? `,
+        WHERE user_id = ? `,
       [session.userId]
     );
 
-    const project = results[0];
+    const project = results;
 
     console.log(project);
 
