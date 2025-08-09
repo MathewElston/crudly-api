@@ -2,26 +2,20 @@ import "server-only";
 import { verifySession } from "../auth/token/session";
 import db from "@/lib/database/db";
 
-export async function getProjects() {
-  const session = await verifySession();
-
-  if (!session) {
-    return null;
-  }
-
+export async function getProjects(userId) {
   try {
     const [results] = await db.execute(
       ` SELECT id, project_name
         FROM User_Projects
         WHERE user_id = ? `,
-      [session.userId]
+      [userId]
     );
 
-    const project = results;
+    const projects = results;
 
-    console.log(project);
+    console.log(projects);
 
-    return project;
+    return projects;
   } catch (error) {
     console.error(`Failed to fetch user: ${error.message}`);
     return null;
