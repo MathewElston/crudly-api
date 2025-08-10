@@ -6,7 +6,6 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import { parseAppSegmentConfig } from "next/dist/build/segment-config/app/app-segment-config";
 import { useRouter, useSearchParams } from "next/navigation";
 export default function ProjectDropdown({ projects }) {
   const router = useRouter();
@@ -18,14 +17,15 @@ export default function ProjectDropdown({ projects }) {
       <Select
         value={currentName}
         onChange={(e) => {
-          const params = new URLSearchParams(searchParams);
+          const params = new URLSearchParams(searchParams.toString());
           params.set("projectName", e.target.value);
-          router.push(`?${params.toString()}`);
+          console.log(params);
+          router.push(`?${params}`);
         }}
       >
         {projects.map((project) => (
-          <MenuItem key={project.id} value={project.project_name}>
-            {project.project_name}
+          <MenuItem key={project.id} value={project.projectName}>
+            {project.projectName}
           </MenuItem>
         ))}
       </Select>
