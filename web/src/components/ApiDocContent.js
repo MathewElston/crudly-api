@@ -1,16 +1,17 @@
 import ProjectDropdown from "@/components/ProjectDropdown";
 import { getProjects } from "@/server/data-access-layer/getProject";
 import { getUser } from "@/server/data-access-layer/getUser";
+import { getApiSpec } from "@/server/api/getApiSpec";
 import { Typography, Stack, Box } from "@mui/material";
-import ApiSpecLoader from "./ApiSpecLoader";
+import ApiDoc from "./ApiDoc";
 import LoadingSpinner from "./LoadingSpinner";
 import { Suspense } from "react";
 
 export default async function ApiDocContent({ searchParams }) {
   const { id } = (await getUser()) ?? {};
   const projects = await getProjects(id);
-
   const projectName = await searchParams.projectName;
+  const spec = projectName ? await getApiSpec(id, projectName) : false;
 
   return (
     <>
@@ -21,14 +22,11 @@ export default async function ApiDocContent({ searchParams }) {
           </Typography>
         </Box>
         <Box width={"50%"} sx={{ display: "flex", justifyContent: "center" }}>
-          <ProjectDropdown userId={id} projects={projects} />
+          <Suspense fallback={<LoadingSpinner message="Getting projects..." />}>
+            <ProjectDropdown userId={id} projects={projects} />
+          </Suspense>
         </Box>
-        <Suspense fallback={<LoadingSpinner />}>
-          <ApiSpecLoader
-            userId={id}
-            projectName={projectName}
-          />
-        </Suspense>
+        <ApiDoc spec={spec} />
       </Stack>
     </>
   );
