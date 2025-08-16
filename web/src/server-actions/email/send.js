@@ -1,7 +1,7 @@
 import WelcomeTemplate from "@/components/email/Welcome";
 import { Resend } from "resend";
 
-export default async function send() {
+export default async function send(from, to, subject, emailComponent) {
   "use server";
   const resend = new Resend(process.env.RESENT_API_KEY);
   const { data } = await resend.emails.send({

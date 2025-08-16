@@ -1,5 +1,0 @@
-class EmailService {
-    constructor() {
-        
-    }
-}
