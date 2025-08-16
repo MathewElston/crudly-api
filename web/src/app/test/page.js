@@ -2,8 +2,9 @@ import ProjectDropdown from "@/components/ProjectDropdown";
 
 import { Box } from "@mui/material";
 
-import { getUser } from "@/server/data-access-layer/getUser";
-import { createApiKey } from "@/server/api/apiServerActions";
+import { getUser } from "@/server-actions/data-access-layer/getUser";
+import { createApiKey } from "@/server-actions/api/apiServerActions";
+import send from "@/server-actions/email/send";
 
 export default async function TestPage() {
   const projects = [
@@ -14,8 +15,8 @@ export default async function TestPage() {
   const user = await getUser();
 
   return (
-    <Box sx={{ m: 5, width: 200, height: 200 }}>
-      <ProjectDropdown projects={projects}></ProjectDropdown>
-    </Box>
+    <form action={send}>
+      <button type="submit">Send Email</button>
+    </form>
   );
 }

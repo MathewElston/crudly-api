@@ -1,7 +1,7 @@
 "use client";
 import SecretText from "@/components/SecretText";
 import { Typography, Stack, Button } from "@mui/material";
-import { resetApiKey } from "@/server/api/apiServerActions";
+import { resetApiKey } from "@/server-actions/api/apiServerActions";
 import { useState } from "react";
 
 export default function ApiManager({ userId, userKey }) {

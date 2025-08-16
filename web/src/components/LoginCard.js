@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { TextField, Box, Typography, Link } from "@mui/material";
-import { login } from "@/server/auth/actions/login";
+import { login } from "@/server-actions/auth/actions/login";
 import { useActionState } from "react";
 import { errors } from "jose";
 

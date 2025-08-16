@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { decrypt } from "@/server/auth/token/session";
+import { decrypt } from "@/server-actions/auth/token/session";
 
 export async function middleware(req) {
   console.log("Middleware running for path:", req.nextUrl.pathname);

@@ -1,7 +1,15 @@
 "use client";
 import React from "react";
-import { AppBar, Toolbar, Typography, Stack, Link, Box, Button } from "@mui/material";
-import { logout } from "@/server/auth/actions/logout";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Stack,
+  Link,
+  Box,
+  Button,
+} from "@mui/material";
+import { logout } from "@/server-actions/auth/actions/logout";
 
 export default function Navbar({ title = "MyApp", motto = "Your motto here" }) {
   return (

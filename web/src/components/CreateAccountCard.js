@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { TextField, Box, Typography, Link } from "@mui/material";
 import { useActionState, useState } from "react";
-import { createAccount } from "@/server/auth/account/createAccount";
+import { createAccount } from "@/server-actions/auth/account/createAccount";
 
 export default function CreateAccountCard({
   subtitle = "Start building your custom APIs in minutes. It's fast, easy, and secure.",

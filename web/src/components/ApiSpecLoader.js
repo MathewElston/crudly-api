@@ -1,5 +1,5 @@
 import ApiDocContent from "./ApiDocContent";
-import { getApiSpec } from "@/server/api/getApiSpec";
+import { getApiSpec } from "@/server-actions/api/getApiSpec";
 import { Suspense } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import ApiDoc from "./ApiDoc";

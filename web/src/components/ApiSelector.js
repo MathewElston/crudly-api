@@ -3,7 +3,7 @@ import FileUpload from "@/components/FileUpload";
 import HoverCard from "@/components/HoverCard";
 import ScrollText from "@/components/ScrollText";
 import theme from "@/lib/styles/theme";
-import { addProject } from "@/server/project/addProject";
+import { addProject } from "@/server-actions/project/addProject";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import { useState } from "react";
 

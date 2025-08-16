@@ -1,7 +1,7 @@
 import ProjectDropdown from "@/components/ProjectDropdown";
-import { getProjects } from "@/server/data-access-layer/getProject";
-import { getUser } from "@/server/data-access-layer/getUser";
-import { getApiSpec } from "@/server/api/getApiSpec";
+import { getProjects } from "@/server-actions/data-access-layer/getProject";
+import { getUser } from "@/server-actions/data-access-layer/getUser";
+import { getApiSpec } from "@/server-actions/api/getApiSpec";
 import { Typography, Stack, Box } from "@mui/material";
 import ApiDoc from "./ApiDoc";
 import LoadingSpinner from "./LoadingSpinner";

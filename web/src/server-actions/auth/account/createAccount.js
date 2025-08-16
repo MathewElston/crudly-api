@@ -2,7 +2,7 @@
 import db from "@/lib/database/db";
 import { encryptPassword } from "../password/encryptPassword";
 import { SignupFormSchema } from "@/lib/definitions";
-import { createApiKey } from "@/server/api/apiServerActions";
+import { createApiKey } from "@/server-actions/api/apiServerActions";
 
 export async function createAccount(state, formData) {
   if (!formData) return { errors: {} };

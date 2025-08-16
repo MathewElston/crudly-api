@@ -1,13 +1,13 @@
 import SecretText from "@/components/SecretText";
 import UsageGraph from "@/components/UsageGraph";
-import { getUser } from "@/server/data-access-layer/getUser";
+import { getUser } from "@/server-actions/data-access-layer/getUser";
 import { Typography, Stack } from "@mui/material";
-import { getApiKey } from "@/server/api/apiServerActions";
+import { getApiKey } from "@/server-actions/api/apiServerActions";
 import ApiManager from "@/components/ApiManager";
 
 export default async function UsagePage() {
   try {
-    const {id, username} = await getUser();
+    const { id, username } = await getUser();
     const { apiKey } = await getApiKey(id);
 
     const data = [

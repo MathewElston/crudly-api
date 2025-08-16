@@ -1,5 +1,5 @@
 "use client";
-import { createApiKey } from "@/server/api/apiServerActions";
+import { createApiKey } from "@/server-actions/api/apiServerActions";
 import { Card, Typography, Stack, Button } from "@mui/material";
 import { useState } from "react";
 
