@@ -11,7 +11,7 @@ export async function getUser() {
 
   try {
     const [results] = await db.execute(
-      ` SELECT id, username, email
+      ` SELECT *
         FROM Users
         WHERE id = ? `,
       [session.userId]

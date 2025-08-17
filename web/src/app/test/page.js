@@ -15,7 +15,7 @@ export default async function TestPage() {
     { name: "Project 3", id: 3 },
   ];
   const { id, username, email } = await getUser();
-
+ 
   console.log(email);
 
   // bind a function to send additional parameters if the server action needs other params sent.
