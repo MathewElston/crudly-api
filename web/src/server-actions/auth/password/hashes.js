@@ -6,5 +6,9 @@ export async function hashPassword(password) {
 }
 
 export async function hashSecurityCode(code) {
-  return await bcrypt.hash(code);
+  return await bcrypt.hash(code,1);
+}
+
+export async function verifyHash(input, hash) {
+  return await bcrypt.compare(input, hash);
 }

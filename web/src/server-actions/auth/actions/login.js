@@ -1,7 +1,6 @@
 "use server";
 import db from "@/lib/database/db";
-import { hashPassword } from "../password/hashes";
-import { verifyPassword } from "../password/verifyPassword";
+import { verifyHash } from "../password/hashes";
 import { createSession } from "../token/session";
 export async function login(state, formData) {
   console.log(formData);
@@ -34,7 +33,7 @@ export async function login(state, formData) {
   }
   const { user_id, password_hash } = results[0];
 
-  const isValid = await verifyPassword(password, password_hash);
+  const isValid = await verifyHash(password, password_hash);
   if (isValid) {
     await createSession(user_id);
     return { success: true };

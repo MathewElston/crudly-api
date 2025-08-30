@@ -7,6 +7,12 @@ import { createApiKey } from "@/server-actions/api/apiServerActions";
 import sendEmail from "@/server-actions/email/sendEmail";
 import WelcomeTemplate from "@/components/email/Welcome";
 import getEmail from "@/server-actions/data-access-layer/getEmail";
+import {
+  createSecurityCode,
+  setSecurityToken,
+} from "@/server-actions/auth/password/securityCode";
+import { hashSecurityCode } from "@/server-actions/auth/password/hashes";
+import { sendPasswordReset } from "@/server-actions/auth/password/resetPassword";
 
 export default async function TestPage() {
   const projects = [
@@ -15,14 +21,19 @@ export default async function TestPage() {
     { name: "Project 3", id: 3 },
   ];
   const { id, username, email } = await getUser();
+  const testUserId = 3;
 
-  console.log(email);
+  // const securityCode = createSecurityCode();
+  // const hashCode = await hashSecurityCode(securityCode);
+  // const results = await setSecurityToken(testUserId, hashCode);
+  //console.log(results);
 
   // bind a function to send additional parameters if the server action needs other params sent.
- // const sendEmail = await sendEmail.bind(null, {});
+  // const sendEmail = await sendEmail.bind(null, {});
   //const sendPasswordReset = await sendEmail.bind(null, {});
+  const emailPasswordReset = await sendPasswordReset.bind(null, testUserId);
   return (
-    <form action={sendEmail}>
+    <form action={emailPasswordReset}>
       <button type="submit">Send Email</button>
       <button> The test button</button>
     </form>
