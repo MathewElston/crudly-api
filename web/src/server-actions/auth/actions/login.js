@@ -1,6 +1,6 @@
 "use server";
 import db from "@/lib/database/db";
-import { encryptPassword } from "../password/encryptPassword";
+import { hashPassword } from "../password/hashes";
 import { verifyPassword } from "../password/verifyPassword";
 import { createSession } from "../token/session";
 export async function login(state, formData) {

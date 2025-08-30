@@ -28,7 +28,7 @@ export async function decrypt(session) {
     return payload;
   } catch (error) {
     console.error("Failed to verify session");
-  }
+  } 
 }
 
 export async function createSession(userId) {

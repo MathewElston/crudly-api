@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
   TextField,
+  FormC,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -15,11 +16,11 @@ export default function ForgotCard({ title, fields, onSubmit, buttonLabel }) {
     fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
   );
 
-  const handleChange = (event) => {
-    event.preventDefault();
+  const handleChange = (e) => {
+    e.preventDefault();
     setFormData((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      [e.target.name]: e.target.value,
     }));
   };
 

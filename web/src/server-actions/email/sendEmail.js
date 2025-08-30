@@ -1,14 +1,14 @@
+"use server";
+
 import WelcomeTemplate from "@/components/email/Welcome";
 import { Resend } from "resend";
-
-export default async function send(from, to, subject, emailComponent) {
-  "use server";
+export default async function sendEmail(comment) {
   const resend = new Resend(process.env.RESENT_API_KEY);
   const { data } = await resend.emails.send({
     from: "delivered@resend.dev",
     to: "mathewdev1337@gmail.com",
     subject: "Test Email",
-    react: WelcomeTemplate({ firstName: "Mathew" }),
+    react: WelcomeTemplate({ firstName: "Mathew", comment }),
   });
 
   console.log(data);

@@ -1,6 +1,6 @@
 "use server";
 import db from "@/lib/database/db";
-import { encryptPassword } from "../password/encryptPassword";
+import { hashPassword } from "../password/hashes";
 import { SignupFormSchema } from "@/lib/definitions";
 import { createApiKey } from "@/server-actions/api/apiServerActions";
 
@@ -31,7 +31,7 @@ export async function createAccount(state, formData) {
     );
     const userId = results.insertId;
 
-    const encryptedPassword = await encryptPassword(password);
+    const encryptedPassword = await hashPassword(password);
 
     await connection.execute(
       `INSERT INTO Users_Credentials (user_id, password_hash) VALUES (?, ?)`,

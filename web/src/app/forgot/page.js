@@ -4,6 +4,7 @@ import HoverCard from "@/components/HoverCard";
 import { Stack } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import sendEmail from "@/server-actions/email/sendEmail";
 
 export default function ForgotPage() {
   const cardConfig = {
@@ -16,6 +17,16 @@ export default function ForgotPage() {
 
   const router = useRouter();
   const [resetSelect, setResetSelect] = useState(null);
+
+  const handleEmailSubmit = async () => {
+    console.log("Clicked email");
+    sendEmail("Email Submit");
+  };
+  const handlePasswordSubmit = async () => {
+    console.log("Clicked password");
+    await sendEmail("Email Password");
+  };
+
   return (
     <Stack spacing={10}>
       <Stack sx={{ width: "50%" }} spacing={4} direction={"row"}>
@@ -47,7 +58,7 @@ export default function ForgotPage() {
             { name: "email", label: "Email", type: "email", required: true },
           ]}
           buttonLabel={"Email Username"}
-          onSubmit={() => router.push("/login")}
+          onSubmit={handleEmailSubmit}
         />
       )}
       {resetSelect === 2 && (
@@ -62,7 +73,7 @@ export default function ForgotPage() {
             },
           ]}
           buttonLabel={"Email Recovery Code"}
-          onSubmit={() => router.push("/forgot/code")}
+          onSubmit={handlePasswordSubmit}
         />
       )}
     </Stack>
