@@ -93,7 +93,6 @@ export default function LoginCard({
             fullWidth
             disabled={pending}
           >
-            {" "}
             Login
           </Button>
         </Stack>

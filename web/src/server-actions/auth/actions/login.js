@@ -3,7 +3,6 @@ import db from "@/lib/database/db";
 import { verifyHash } from "../password/hashes";
 import { createSession } from "../token/session";
 export async function login(state, formData) {
-  console.log(formData);
   const username = formData.get("username");
   const password = formData.get("password");
   const errors = {};

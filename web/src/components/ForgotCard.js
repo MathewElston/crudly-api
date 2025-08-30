@@ -7,11 +7,15 @@ import {
   Typography,
   Button,
   TextField,
-  FormC,
 } from "@mui/material";
 import { useState } from "react";
 
-export default function ForgotCard({ title, fields, onSubmit, buttonLabel }) {
+export default function ForgotCard({
+  title,
+  fields,
+  onSubmit,
+  buttonLabel,
+}) {
   const [formData, setFormData] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
   );
@@ -35,7 +39,6 @@ export default function ForgotCard({ title, fields, onSubmit, buttonLabel }) {
       >
         <Box
           component="form"
-          onSubmit={handleSubmit}
           sx={{
             height: "100%",
             display: "flex",
