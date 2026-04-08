@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Paper,
   Box,
@@ -14,7 +13,9 @@ export default function ForgotCard({
   title,
   fields,
   onSubmit,
+  onAction,
   buttonLabel,
+  children,
 }) {
   const [formData, setFormData] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
@@ -30,7 +31,12 @@ export default function ForgotCard({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    if (onSubmit) {
+      onSubmit(formData);
+    }
+    if (onAction) {
+      onAction(formData);
+    }
   };
   return (
     <>
@@ -63,6 +69,7 @@ export default function ForgotCard({
                 fullWidth
               ></TextField>
             ))}
+            {children}
             <Stack direction={"row"} justifyContent={"space-around"}>
               <Button
                 type="submit"

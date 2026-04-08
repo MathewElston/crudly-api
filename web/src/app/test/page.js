@@ -13,6 +13,7 @@ import {
 } from "@/server-actions/auth/password/securityCode";
 import { hashSecurityCode } from "@/server-actions/auth/password/hashes";
 import { sendPasswordReset } from "@/server-actions/auth/password/resetPassword";
+import FormCard from "@/components/FormCard";
 
 export default async function TestPage() {
   const projects = [
@@ -33,9 +34,13 @@ export default async function TestPage() {
   //const sendPasswordReset = await sendEmail.bind(null, {});
   const emailPasswordReset = await sendPasswordReset.bind(null, testUserId);
   return (
-    <form action={emailPasswordReset}>
-      <button type="submit">Send Email</button>
-      <button> The test button</button>
-    </form>
+    <div>
+      <form action={emailPasswordReset}>
+        <button type="submit">Send Email</button>
+        <button> The test button</button>
+      </form>
+
+      <FormCard />
+    </div>
   );
 }
