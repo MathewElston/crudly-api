@@ -1,15 +1,23 @@
--- HOW TO START --
+** INCOMPLETE **
+Getting Started
 
-1. Ensure the containers are online.
-   Clean Build All Containers and go online.
-   cd into the parents directory of the project.
-   docker compose up --build or docker compose up
+1. Start Docker Containers
 
-2. To run the web server in dev mode. cd into the web directory
-   npm run dev
+From the root directory:
 
--- Remote into the mysql server --
-Run a shell instance on the mysql server using docker
+docker compose up --build
+
+Or, if containers are already built:
+
+docker compose up 2. Run the Web Server (Development Mode)
+cd web
+npm run dev
+Access MySQL (Docker)
+
+Open a shell inside the MySQL container:
+
 docker compose exec -it mysql-server sh
-inside the shell run:
+
+Then log in:
+
 mysql -u root -p
