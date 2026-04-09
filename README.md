@@ -9,10 +9,12 @@ docker compose up --build
 
 Or, if containers are already built:
 
-docker compose up 2. Run the Web Server (Development Mode)
-cd web
-npm run dev
-Access MySQL (Docker)
+docker compose up
+
+2. Run the Web Server (Development Mode)
+   cd web
+   npm run dev
+   Access MySQL (Docker)
 
 Open a shell inside the MySQL container:
 
