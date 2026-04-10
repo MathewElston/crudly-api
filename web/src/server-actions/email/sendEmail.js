@@ -6,7 +6,7 @@ export default async function sendEmail({
   subject = "Test Email",
   templateComponent,
 }) {
-  const resend = new Resend(process.env.RESENT_API_KEY);
+  const resend = new Resend(process.env.RESENTD_API_KEY);
   const { data } = await resend.emails.send({
     from: from,
     to: to,
